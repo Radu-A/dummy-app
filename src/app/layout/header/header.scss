@@ -1,0 +1,21 @@
+.example-spacer {
+  flex: 1 1 auto;
+}
+
+.header-toolbar {
+  background-color: var(--mat-sys-primary);
+}
+
+.logo {
+  font: var(--mat-sys-headline-medium);
+  font-weight: 500;
+  color: var(--mat-sys-on-primary);
+}
+
+.nav-links a {
+  color: var(--mat-sys-on-primary);
+}
+
+.nav-icon {
+  color: var(--mat-sys-on-primary);
+}

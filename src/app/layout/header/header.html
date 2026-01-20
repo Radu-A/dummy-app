@@ -1,1 +1,13 @@
-<p>header works!</p>
+<mat-toolbar class="header-toolbar">
+  <a [routerLink]="['/products']"><span class="logo">DUMMY APP</span></a>
+  <span class="example-spacer"></span>
+  <nav class="nav-links">
+    <a mat-button [routerLink]="['/products']">Products</a>
+  </nav>
+  <span class="example-spacer"></span>
+  <nav class="nav-icons">
+    <button matIconButton class="example-icon" aria-label="Example icon-button with user icon">
+      <mat-icon class="nav-icon">person</mat-icon>
+    </button>
+  </nav>
+</mat-toolbar>
