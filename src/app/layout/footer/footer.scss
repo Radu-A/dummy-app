@@ -1,0 +1,36 @@
+.footer-toolbar {
+  flex-direction: column;
+  height: auto;
+  padding: 1rem;
+  background-color: var(--mat-sys-surface-container);
+}
+
+.example-spacer {
+  flex: 1 1 auto;
+}
+
+.logo-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  max-width: 1400px;
+  .logo {
+    font: var(--mat-sys-headline-medium);
+    font-weight: 500;
+    color: var(--mat-sys-on-surface);
+  }
+}
+
+.legal-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+  max-width: 1400px;
+  font: var(--mat-sys-label-medium);
+  .legal-links {
+    display: flex;
+    gap: 0.5rem;
+  }
+}
