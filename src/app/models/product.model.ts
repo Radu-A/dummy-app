@@ -6,5 +6,11 @@ export interface ProductModel {
   price: number;
   stock: number;
   thumbnail: string;
-  images: string[];
+  images: [string];
+}
+
+export interface ProductStateModel {
+  loading: boolean;
+  data: ProductModel | null;
+  error: string | null;
 }
