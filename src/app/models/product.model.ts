@@ -14,3 +14,13 @@ export interface ProductStateModel {
   data: ProductModel | null;
   error: string | null;
 }
+
+export interface ListStateModel {
+  loading: boolean;
+  data: ProductModel[] | null;
+  error: string | null;
+}
+
+export interface ResponseModel {
+  products: ProductModel[];
+}
