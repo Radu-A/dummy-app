@@ -1,1 +1,47 @@
-<p>product-details works!</p>
+<section class="details-section">
+  <article class="details-header">
+    <a matButton="elevated" [routerLink]="['/products']" target="_blank">&larr; Back</a>
+  </article>
+  @if (productState$ | async; as state) {
+    @if (state.error) {
+      <div class="message-container">
+        <h2>Something went wrong.</h2>
+      </div>
+    }
+    @if (state.loading) {
+      <div class="message-container">
+        <h2>Loading product...</h2>
+      </div>
+    } @else {
+      @if (state.data; as product) {
+        <div class="details-container">
+          <div class="grid-container">
+            <mat-card class="image-card" appearance="outlined">
+              <img mat-card-image [src]="product.images[0]" alt="Photo of a Shiba Inu" />
+            </mat-card>
+
+            <mat-card class="content-card" appearance="outlined">
+              <mat-card-header class="card-header">
+                <mat-card-title>{{ product.title }}</mat-card-title>
+                <mat-card-subtitle>{{ product.category }}</mat-card-subtitle>
+              </mat-card-header>
+
+              <mat-card-content>
+                <p>
+                  {{ product.description }}
+                </p>
+              </mat-card-content>
+
+              <span class="example-spacer"></span>
+
+              <mat-card-actions class="card-footer">
+                <button matButton>{{ product.price }} €</button>
+                <button matButton>Stock: {{ product.stock }}</button>
+              </mat-card-actions>
+            </mat-card>
+          </div>
+        </div>
+      }
+    }
+  }
+</section>
