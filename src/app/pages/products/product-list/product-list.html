@@ -1,1 +1,17 @@
-<p>product-list works!</p>
+<section class="search-section">
+  <mat-form-field class="form-field">
+    <mat-label>Search by product name</mat-label>
+    <input matInput />
+  </mat-form-field>
+</section>
+<section>
+  <div class="grid-container">
+    @if (listState$ | async; as list) {
+      @for (product of list; track product.id) {
+        <div class="grid-cell">
+          <app-product-card [product]="product"></app-product-card>
+        </div>
+      }
+    }
+  </div>
+</section>

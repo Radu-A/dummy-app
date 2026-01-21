@@ -1,6 +1,6 @@
 <section class="details-section">
   <article class="details-header">
-    <a matButton="elevated" [routerLink]="['/products']" target="_blank">&larr; Back</a>
+    <a matButton="elevated" [routerLink]="['/products']">&larr; Back</a>
   </article>
   @if (productState$ | async; as state) {
     @if (state.error) {

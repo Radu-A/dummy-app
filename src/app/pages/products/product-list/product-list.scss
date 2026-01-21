@@ -1,0 +1,42 @@
+:host {
+  padding: 2rem;
+  max-width: 1300px;
+  width: 100%;
+}
+
+.search-section {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+  .form-field {
+    width: 100%;
+  }
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+@media (width >= 48rem) {
+  .grid-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (width >= 64rem) {
+  .grid-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+// Breakpoint prefix	Minimum width	CSS
+// sm	40rem (640px)	@media (width >= 40rem) { ... }
+// md	48rem (768px)	@media (width >= 48rem) { ... }
+// lg	64rem (1024px)	@media (width >= 64rem) { ... }
+// xl	80rem (1280px)	@media (width >= 80rem) { ... }
+// 2xl	96rem (1536px)	@media (width >= 96rem) { ... }
