@@ -15,7 +15,8 @@ html {
         tertiary: mat.$blue-palette,
       ),
       typography: Roboto,
-      density: 0,
+      // "densidad confort" inputs, botones y listas
+      density: -2,
     )
   );
 }

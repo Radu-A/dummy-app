@@ -16,23 +16,23 @@
 
 .grid-container {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: repeat(auto-fill, minmax(300px, auto));
   gap: 1rem;
 }
 
-@media (width >= 48rem) {
-  .grid-container {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
+// @media (width >= 48rem) {
+//   .grid-container {
+//     display: grid;
+//     grid-template-columns: repeat(2, 1fr);
+//   }
+// }
 
-@media (width >= 64rem) {
-  .grid-container {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
+// @media (width >= 64rem) {
+//   .grid-container {
+//     display: grid;
+//     grid-template-columns: repeat(3, 1fr);
+//   }
+// }
 
 // Breakpoint prefix	Minimum width	CSS
 // sm	40rem (640px)	@media (width >= 40rem) { ... }
