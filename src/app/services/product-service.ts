@@ -9,18 +9,19 @@ import { ProductModel, ResponseModel } from '../models/product.model';
 })
 export class ProductService {
   baseUrl = 'https://dummyjson.com/products';
+  productsNumber = '?limit=15&skip=15';
   httpClient = inject(HttpClient);
 
   getProducts(): Observable<ProductModel[]> {
     return (
       this.httpClient
-        .get<ResponseModel>(this.baseUrl)
+        .get<ResponseModel>(`${this.baseUrl}${this.productsNumber}`)
         // Products array are inside { "products": [...] }
         .pipe(map((response) => response.products))
     );
   }
 
-  getProductById(): Observable<ProductModel> {
-    return this.httpClient.get<ProductModel>(`${this.baseUrl}/1`);
+  getProductById(id: number): Observable<ProductModel> {
+    return this.httpClient.get<ProductModel>(`${this.baseUrl}/${id}`);
   }
 }

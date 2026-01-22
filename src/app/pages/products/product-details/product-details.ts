@@ -1,5 +1,5 @@
-import { Component, inject } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Component, inject, signal } from '@angular/core';
+import { RouterLink, ActivatedRoute } from '@angular/router';
 import { Observable, catchError, map, startWith, of, tap } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
 
@@ -16,9 +16,11 @@ import { ProductService } from '../../../services/product-service';
   styleUrl: './product-details.scss',
 })
 export class ProductDetails {
-  service = inject(ProductService);
+  private service = inject(ProductService);
+  private route = inject(ActivatedRoute);
+  private readonly id = signal<number>(Number(this.route.snapshot.params['id']));
 
-  productState$: Observable<ProductStateModel> = this.service.getProductById().pipe(
+  productState$: Observable<ProductStateModel> = this.service.getProductById(this.id()).pipe(
     tap((result) => console.log(result)),
     map((result) => ({
       loading: false,
