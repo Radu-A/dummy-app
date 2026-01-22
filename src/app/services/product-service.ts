@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, map } from 'rxjs';
+import { Observable } from 'rxjs';
 
 import { ProductModel, ResponseModel } from '../models/product.model';
 
@@ -9,19 +9,18 @@ import { ProductModel, ResponseModel } from '../models/product.model';
 })
 export class ProductService {
   baseUrl = 'https://dummyjson.com/products';
-  productsNumber = '?limit=15&skip=15';
   httpClient = inject(HttpClient);
 
-  getProducts(): Observable<ProductModel[]> {
-    return (
-      this.httpClient
-        .get<ResponseModel>(`${this.baseUrl}${this.productsNumber}`)
-        // Products array are inside { "products": [...] }
-        .pipe(map((response) => response.products))
+  getProducts(total: number, skip: number): Observable<ResponseModel> {
+    // Return an Observable with ResponseModel value:
+    // {products: ProductModel[];total: number;}
+    return this.httpClient.get<ResponseModel>(
+      `${this.baseUrl}?limit=${total}&skip=${skip.toString()}`,
     );
   }
 
   getProductById(id: number): Observable<ProductModel> {
+    // Return an Observable with ProductModel value
     return this.httpClient.get<ProductModel>(`${this.baseUrl}/${id}`);
   }
 }

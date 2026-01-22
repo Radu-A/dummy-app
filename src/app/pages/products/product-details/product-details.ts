@@ -18,6 +18,8 @@ import { ProductService } from '../../../services/product-service';
 export class ProductDetails {
   private service = inject(ProductService);
   private route = inject(ActivatedRoute);
+  // Improvement:
+  // paramsMap and pipe to direct connection with productState$
   private readonly id = signal<number>(Number(this.route.snapshot.params['id']));
 
   productState$: Observable<ProductStateModel> = this.service.getProductById(this.id()).pipe(

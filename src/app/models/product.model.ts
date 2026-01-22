@@ -23,4 +23,5 @@ export interface ListStateModel {
 
 export interface ResponseModel {
   products: ProductModel[];
+  total: number;
 }
