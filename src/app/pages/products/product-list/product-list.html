@@ -1,8 +1,5 @@
 <section class="search-section">
-  <mat-form-field class="form-field" appearance="outline">
-    <mat-label>Search product by category</mat-label>
-    <input matInput [formControl]="searchInput" />
-  </mat-form-field>
+  <app-search-input class="form-field" (outputValue)="handleSearch($event)"></app-search-input>
 </section>
 
 @if (response$ | async; as response) {
@@ -11,6 +8,8 @@
       [length]="response.total"
       [pageSizeOptions]="[15, 25, 50, 100]"
       aria-label="Select page"
+      [pageSize]="pageSize$.value"
+      [pageIndex]="pageIndex$.value"
       (page)="handlePageEvent($event)"
     >
     </mat-paginator>

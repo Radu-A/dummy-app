@@ -11,14 +11,14 @@ export class ProductService {
   baseUrl = 'https://dummyjson.com/products/search?q=';
   httpClient = inject(HttpClient);
 
-  getProducts(total: number, skip: number, term: string | null): Observable<ResponseModel> {
+  getProducts(total: number, index: number, term: string | null): Observable<ResponseModel> {
+    const skip = total * index;
     console.log(term);
-    console.log(`${this.baseUrl}${term}&?limit=${total}&skip=${skip.toString()}`);
-
+    console.log(`${this.baseUrl}${term}&limit=${total}&skip=${skip.toString()}`);
     // Return an Observable with ResponseModel value:
     // {products: ProductModel[];total: number;}
     return this.httpClient.get<ResponseModel>(
-      `${this.baseUrl}${term}&?limit=${total}&skip=${skip.toString()}`,
+      `${this.baseUrl}${term}&limit=${total}&skip=${skip.toString()}`,
     );
   }
 
