@@ -1,11 +1,11 @@
 <section class="search-section">
   <mat-form-field class="form-field" appearance="outline">
-    <mat-label>Search by product name</mat-label>
-    <input matInput />
+    <mat-label>Search product by category</mat-label>
+    <input matInput [formControl]="searchInput" />
   </mat-form-field>
 </section>
 
-@if (listState$ | async; as response) {
+@if (response$ | async; as response) {
   <section class="pagination-section">
     <mat-paginator
       [length]="response.total"
