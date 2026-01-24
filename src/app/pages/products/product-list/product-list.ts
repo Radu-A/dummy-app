@@ -1,7 +1,8 @@
 // Angular
 import { Component, inject } from '@angular/core';
 import { AsyncPipe } from '@angular/common';
-import { ReactiveFormsModule, FormControl } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 // Third part
 import { BehaviorSubject, combineLatest, Observable, switchMap } from 'rxjs';
 // Material
@@ -32,10 +33,11 @@ import { SearchInput } from '../../../components/search-input/search-input';
 })
 export class ProductList {
   private readonly service = inject(ProductService);
+  private readonly router = inject(Router);
 
-  inputValue$ = new BehaviorSubject<string | null>('');
   pageSize$ = new BehaviorSubject<number>(15);
   pageIndex$ = new BehaviorSubject<number>(0);
+  inputValue$ = new BehaviorSubject<string | null>('');
 
   // LOGIC KEY:
   // Create an Observable as combination of BehaviourSubject

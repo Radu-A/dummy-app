@@ -32,7 +32,7 @@ export class AuthService {
         // Invalid credentials
         return {
           success: false,
-          data: data.message,
+          data: data.message, // check invalid credentials
           error: data.message,
         };
       }

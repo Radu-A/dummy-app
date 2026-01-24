@@ -1,6 +1,6 @@
 import { Component, inject, signal } from '@angular/core';
 import { ReactiveFormsModule, FormControl, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -8,7 +8,6 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 
-import { UserStateModel } from './../../models/user.model';
 import { AuthService } from '../../services/auth-service';
 
 @Component({
@@ -28,7 +27,7 @@ export class Login {
   server = inject(AuthService);
   router = inject(Router);
 
-  userState = signal<UserStateModel | undefined>(undefined);
+  // userState = signal<UserStateModel | undefined>(undefined);
   usernameMessage = signal('');
   passwordMessage = signal('');
   loginError = signal<string | null>(null);
@@ -69,23 +68,24 @@ export class Login {
   // username: 'emilys',
   // password: 'emilyspass',
   async handleLogin() {
-    if (!this.authForm.valid) {
-      return;
-    } else {
+    if (this.authForm.valid) {
       const { username, password } = this.authForm.value;
       const response = await this.server.login(username!, password!);
+
       // Always save userState, even not successfully
-      this.userState.set(response);
+      // this.userState.set(response);
+
       // Valid credentials
       if (response.success && response.data) {
-        console.log(`Token recived: ${response.data.accessToken}`);
-        localStorage.setItem('accessToken', response.data.accessToken);
+        localStorage.setItem('dummySession', JSON.stringify(response.data));
         this.loginError.set(null);
         this.router.navigate(['/products']);
+
         // Invalid credentials
       } else if (!response.success && response.data) {
         console.log(response.error);
         this.loginError.set('Invalid username or/and password.');
+
         // Server error
       } else {
         console.log(response.error);
@@ -94,3 +94,31 @@ export class Login {
     }
   }
 }
+// async handleLogin() {
+//   if (!this.authForm.valid) {
+//     return;
+//   } else {
+//     const { username, password } = this.authForm.value;
+//     const response = await this.server.login(username!, password!);
+
+//     // Always save userState, even not successfully
+//     // this.userState.set(response);
+
+//     // Valid credentials
+//     if (response.success && response.data) {
+//       localStorage.setItem('dummySession', JSON.stringify(response.data));
+//       this.loginError.set(null);
+//       this.router.navigate(['/products']);
+
+//       // Invalid credentials
+//     } else if (!response.success && response.data) {
+//       console.log(response.error);
+//       this.loginError.set('Invalid username or/and password.');
+
+//       // Server error
+//     } else {
+//       console.log(response.error);
+//       this.loginError.set(response.error);
+//     }
+//   }
+// }
