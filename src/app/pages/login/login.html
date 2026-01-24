@@ -5,20 +5,28 @@
       <mat-card-subtitle>Log in to your Dummy account</mat-card-subtitle>
     </mat-card-header>
     <mat-card-content class="auth-card-content">
-      <form class="auth-form">
+      <form class="auth-form" [formGroup]="authForm" (ngSubmit)="handleLogin()">
         <mat-form-field class="auth-input" appearance="outline">
           <mat-label>Username</mat-label>
-          <input matInput />
+          <input matInput formControlName="username" (blur)="updateUsernameMessage()" />
           <mat-icon matSuffix>person</mat-icon>
+          <!-- Material docs: -->
+          @if (username.invalid) {
+            <mat-error>{{ usernameMessage() }}</mat-error>
+          }
         </mat-form-field>
 
         <mat-form-field class="auth-input" appearance="outline">
-          <mat-label>Email</mat-label>
-          <input matInput />
+          <mat-label>Password</mat-label>
+          <input matInput formControlName="password" (blur)="updatePasswordMessage()" />
           <mat-icon matSuffix>search</mat-icon>
+          <!-- Material docs: -->
+          @if (password.invalid) {
+            <mat-error>{{ passwordMessage() }}</mat-error>
+          }
         </mat-form-field>
 
-        <button matButton="filled">Login</button>
+        <button matButton="filled" type="submit">Login</button>
       </form>
     </mat-card-content>
 
@@ -29,5 +37,10 @@
         <a matButton>Create a new one.</a>
       </p>
     </mat-card-content>
+    @if (loginError()) {
+      <mat-card-content>
+        <mat-error>{{ loginError() }}</mat-error>
+      </mat-card-content>
+    }
   </mat-card>
 </section>

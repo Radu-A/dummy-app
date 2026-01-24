@@ -32,12 +32,9 @@ import { SearchInput } from '../../../components/search-input/search-input';
 })
 export class ProductList {
   private readonly service = inject(ProductService);
-  searchInput = new FormControl('');
-  private inputValue$ = new BehaviorSubject<string | null>('');
 
-  // BehaviourSubject for pageSize
+  inputValue$ = new BehaviorSubject<string | null>('');
   pageSize$ = new BehaviorSubject<number>(15);
-  // BehaviourSubject for pageIndex
   pageIndex$ = new BehaviorSubject<number>(0);
 
   // LOGIC KEY:
