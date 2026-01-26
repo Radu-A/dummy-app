@@ -4,10 +4,16 @@ export interface UserDataModel {
   email: string;
   accessToken: string;
   refreshToken: string;
+  expiresAt: number;
 }
 
 export interface UserStateModel {
   success: boolean;
   data?: UserDataModel;
   error?: any;
+}
+
+export interface RefreshResponseModel {
+  accessToken: string;
+  refreshToken: string;
 }

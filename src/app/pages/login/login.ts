@@ -24,7 +24,7 @@ import { AuthService } from '../../services/auth-service';
   styleUrl: './login.scss',
 })
 export class Login {
-  server = inject(AuthService);
+  service = inject(AuthService);
   router = inject(Router);
 
   // userState = signal<UserStateModel | undefined>(undefined);
@@ -70,14 +70,14 @@ export class Login {
   async handleLogin() {
     if (this.authForm.valid) {
       const { username, password } = this.authForm.value;
-      const response = await this.server.login(username!, password!);
+      const response = await this.service.login(username!, password!);
 
       // Always save userState, even not successfully
       // this.userState.set(response);
 
       // Valid credentials
       if (response.success && response.data) {
-        localStorage.setItem('dummySession', JSON.stringify(response.data));
+        this.service.setItem('dummySession', JSON.stringify(response.data));
         this.loginError.set(null);
         this.router.navigate(['/products']);
 
@@ -94,31 +94,3 @@ export class Login {
     }
   }
 }
-// async handleLogin() {
-//   if (!this.authForm.valid) {
-//     return;
-//   } else {
-//     const { username, password } = this.authForm.value;
-//     const response = await this.server.login(username!, password!);
-
-//     // Always save userState, even not successfully
-//     // this.userState.set(response);
-
-//     // Valid credentials
-//     if (response.success && response.data) {
-//       localStorage.setItem('dummySession', JSON.stringify(response.data));
-//       this.loginError.set(null);
-//       this.router.navigate(['/products']);
-
-//       // Invalid credentials
-//     } else if (!response.success && response.data) {
-//       console.log(response.error);
-//       this.loginError.set('Invalid username or/and password.');
-
-//       // Server error
-//     } else {
-//       console.log(response.error);
-//       this.loginError.set(response.error);
-//     }
-//   }
-// }

@@ -7,6 +7,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatMenuModule } from '@angular/material/menu';
 
 import { UserDataModel } from '../../models/user.model';
+import { AuthService } from '../../services/auth-service';
 
 @Component({
   selector: 'app-header',
@@ -16,20 +17,33 @@ import { UserDataModel } from '../../models/user.model';
 })
 export class Header {
   router = inject(Router);
+  private readonly service = inject(AuthService);
 
-  gnOnInit() {
-    const localStorageContent = localStorage.getItem('dummySession');
+  logout() {
+    this.service.removeItem('dummySession');
+    this.router.navigate(['/login']);
+  }
+
+  async checkSession() {
+    const localStorageContent = this.service.getItem('dummySession');
     if (localStorageContent) {
-      const dummySession: UserDataModel = JSON.parse(localStorageContent);
-      console.log(`ngOnInit says:`);
-      console.log(`Username - ${dummySession.username}`);
+      const dummySession: UserDataModel = await JSON.parse(localStorageContent);
+      console.log('Hora actual', Date.now() + 10);
+      console.log('Expires at: ', dummySession.expiresAt);
+      if (dummySession.expiresAt <= Date.now()) {
+        if (dummySession.refreshToken) {
+          const response = this.service.refreshSession(dummySession);
+        } else {
+          this.service.removeItem('dummySession');
+          this.router.navigate(['/login']);
+        }
+      }
     } else {
       this.router.navigate(['/login']);
     }
   }
 
-  logout() {
-    localStorage.removeItem('dummySession');
-    this.router.navigate(['/login']);
+  ngOnInit() {
+    this.checkSession();
   }
 }
