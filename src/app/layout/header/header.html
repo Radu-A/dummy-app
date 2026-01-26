@@ -11,7 +11,7 @@
         <mat-icon class="nav-icon">person</mat-icon>
       </button>
       <mat-menu #menu="matMenu">
-        <span class="username">Username</span>
+        <span class="username">{{ userData()?.username }}</span>
         <button class="logout-button" mat-menu-item (click)="logout()">Logout</button>
       </mat-menu>
     </nav>

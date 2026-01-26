@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { RouterLink, Router } from '@angular/router';
 
 import { MatIconModule } from '@angular/material/icon';
@@ -19,20 +19,21 @@ export class Header {
   router = inject(Router);
   private readonly service = inject(AuthService);
 
+  userData = signal<UserDataModel | undefined>(undefined);
+
   logout() {
     this.service.removeItem('dummySession');
     this.router.navigate(['/login']);
   }
 
   async checkSession() {
-    const localStorageContent = this.service.getItem('dummySession');
+    let localStorageContent = this.service.getItem('dummySession');
     if (localStorageContent) {
       const dummySession: UserDataModel = await JSON.parse(localStorageContent);
-      console.log('Hora actual', Date.now() + 10);
-      console.log('Expires at: ', dummySession.expiresAt);
       if (dummySession.expiresAt <= Date.now()) {
         if (dummySession.refreshToken) {
-          const response = this.service.refreshSession(dummySession);
+          this.service.refreshSession(dummySession);
+          localStorageContent = this.service.getItem('dummySession');
         } else {
           this.service.removeItem('dummySession');
           this.router.navigate(['/login']);
@@ -43,7 +44,16 @@ export class Header {
     }
   }
 
+  async getUser() {
+    let localStorageContent = this.service.getItem('dummySession');
+    if (localStorageContent) {
+      const dummySession: UserDataModel = await JSON.parse(localStorageContent);
+      this.userData.set(dummySession);
+    }
+  }
+
   ngOnInit() {
     this.checkSession();
+    this.getUser();
   }
 }

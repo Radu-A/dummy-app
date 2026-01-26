@@ -1,15 +1,19 @@
 header {
-  background-color: var(--mat-sys-surface-container);
+  // background-color: var(--mat-sys-surface-container);
+  padding: 0.5rem;
+  border-bottom: 1px solid var(--mat-sys-outline-variant);
 }
 
 .header-toolbar {
   margin: 0 auto;
   max-width: 1400px;
-  background-color: var(--mat-sys-surface-container);
+  // background-color: var(--mat-sys-surface-container);
 
   .logo {
-    font: var(--mat-sys-headline-medium);
-    font-weight: 500;
+    font-family: 'Shadows Into Light';
+    // font: var(--mat-sys-headline-medium);
+    font-size: 2.5rem;
+    font-weight: 600;
     color: var(--mat-sys-on-surface);
   }
 
