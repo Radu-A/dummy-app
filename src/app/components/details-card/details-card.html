@@ -1,0 +1,42 @@
+<mat-card class="content-card" appearance="outlined">
+  <mat-card-header class="card-header">
+    <mat-card-title>{{ product().title }}</mat-card-title>
+    <mat-card-subtitle>{{ product().category }}</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-actions class="info-line">
+    <button matButton>{{ product().price }} €</button>
+    <button matButton>Stock: {{ product().stock }}</button>
+  </mat-card-actions>
+  <div class="separator"></div>
+  <mat-card-content class="info-container">
+    <div class="info-line">
+      <span>Brand:</span>
+      <span>{{ product().brand }}</span>
+    </div>
+    <div class="info-line">
+      <span>Rating:</span>
+      <span>{{ product().rating }}</span>
+    </div>
+    <div class="info-line">
+      <span>Stock:</span>
+      <span>{{ product().availabilityStatus }}</span>
+    </div>
+  </mat-card-content>
+  <div class="separator"></div>
+  <mat-card-content class="info-container">
+    <p class="description">
+      {{ product().description }}
+    </p>
+  </mat-card-content>
+  <div class="separator"></div>
+  <mat-card-content class="info-container">
+    <div class="info-line">
+      <span>Shipping Information</span>
+      <span>{{ product().shippingInformation }}</span>
+    </div>
+    <button class="buy-button" matButton="outlined" type="submit">Add to shopping cart</button>
+    <button class="buy-button" matButton="filled" type="submit">Buy now</button>
+  </mat-card-content>
+
+  <!-- <span class="example-spacer"></span> -->
+</mat-card>

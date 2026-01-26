@@ -8,6 +8,9 @@ import { RefreshResponseModel, UserDataModel, UserStateModel } from '../models/u
 export class AuthService {
   baseUrl = 'https://dummyjson.com/auth/login';
 
+  // =============
+  // LOCAL STORAGE
+  // =============
   setItem(itemName: string, item: string) {
     try {
       localStorage.setItem(itemName, item);
@@ -15,7 +18,6 @@ export class AuthService {
       throw `Error saving file in local storage: ${error}`;
     }
   }
-
   getItem(itemName: string) {
     try {
       return localStorage.getItem(itemName);
@@ -23,7 +25,6 @@ export class AuthService {
       throw `Error loading file in local storage: ${error}`;
     }
   }
-
   removeItem(itemName: string) {
     try {
       localStorage.removeItem(itemName);

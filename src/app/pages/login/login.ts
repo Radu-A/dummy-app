@@ -72,9 +72,6 @@ export class Login {
       const { username, password } = this.authForm.value;
       const response = await this.service.login(username!, password!);
 
-      // Always save userState, even not successfully
-      // this.userState.set(response);
-
       // Valid credentials
       if (response.success && response.data) {
         this.service.setItem('dummySession', JSON.stringify(response.data));
