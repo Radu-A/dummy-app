@@ -72,6 +72,36 @@ img {
   height: auto;
 }
 
+.user-menu {
+  --mat-menu-container-color: var(--mat-sys-primary-container);
+  width: 250px;
+
+  .avatar-image {
+    width: 3rem;
+  }
+
+  .user-line {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0 12px;
+    .username {
+      font-size: 1.2rem;
+    }
+  }
+
+  .logout-button {
+    display: flex;
+    justify-content: flex-start;
+    gap: 0.2rem;
+    .logout-icon {
+      font-size: 1.4rem !important;
+      margin: 0;
+      padding: 0;
+    }
+  }
+}
+
 // ===============
 // BREAK POINTS
 // ===============
