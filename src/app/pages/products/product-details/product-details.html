@@ -17,28 +17,10 @@
         <div class="details-container">
           <div class="grid-container">
             <mat-card class="image-card" appearance="outlined">
-              <img mat-card-image [src]="product.images[0]" alt="Photo of a Shiba Inu" />
+              <img mat-card-image [src]="product.images[0]" [alt]="product.title" />
             </mat-card>
 
-            <mat-card class="content-card" appearance="outlined">
-              <mat-card-header class="card-header">
-                <mat-card-title>{{ product.title }}</mat-card-title>
-                <mat-card-subtitle>{{ product.category }}</mat-card-subtitle>
-              </mat-card-header>
-
-              <mat-card-content>
-                <p>
-                  {{ product.description }}
-                </p>
-              </mat-card-content>
-
-              <span class="example-spacer"></span>
-
-              <mat-card-actions class="card-footer">
-                <button matButton>{{ product.price }} €</button>
-                <button matButton>Stock: {{ product.stock }}</button>
-              </mat-card-actions>
-            </mat-card>
+            <app-details-card [product]="product"></app-details-card>
           </div>
         </div>
       }

@@ -9,9 +9,11 @@ import { MatButtonModule } from '@angular/material/button';
 import { ProductStateModel } from '../../../models/product.model';
 import { ProductService } from '../../../services/product-service';
 
+import { DetailsCard } from '../../../components/details-card/details-card';
+
 @Component({
   selector: 'app-product-details',
-  imports: [AsyncPipe, MatButtonModule, RouterLink, MatCardModule],
+  imports: [AsyncPipe, MatButtonModule, RouterLink, MatCardModule, DetailsCard],
   templateUrl: './product-details.html',
   styleUrl: './product-details.scss',
 })

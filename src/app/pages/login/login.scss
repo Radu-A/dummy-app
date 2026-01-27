@@ -1,0 +1,33 @@
+.auth-section {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.auth-card {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 1rem;
+  min-width: 400px;
+  max-width: 500px;
+  mat-card-title {
+    font: var(--mat-sys-headline-medium);
+  }
+  .separator {
+    padding: 0rem 3rem;
+    height: 1px;
+    background-color: var(--mat-sys-outline-variant);
+  }
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  .auth-input {
+    width: 100%;
+  }
+}

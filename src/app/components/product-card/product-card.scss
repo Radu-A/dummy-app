@@ -1,8 +1,15 @@
-:host {
-}
-
 .product-card {
-  // padding: 1rem;
+  padding: 0.5rem;
+  .product-title {
+    height: 56px;
+  }
+  img {
+    margin: 0 auto;
+    max-width: 400px;
+  }
+  .star-icon {
+    color: rgb(241, 115, 31);
+  }
 }
 
 .card-actions {
