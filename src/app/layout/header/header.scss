@@ -16,22 +16,37 @@ header {
     font-weight: 600;
     color: var(--mat-sys-on-surface);
   }
-
   .example-spacer {
     flex: 1 1 auto;
   }
+}
 
-  .nav-links a {
+.nav-links {
+  a {
     color: var(--mat-sys-on-surface);
   }
+}
 
-  .nav-icon {
-    color: var(--mat-sys-primary);
+.nav-icons {
+  .user-button {
+    display: flex;
+    align-items: center;
+    border: none;
+    background-color: inherit;
+    cursor: pointer;
+    .username {
+      font-size: 1.2rem;
+      // color: var(--mat-sys-primary);
+    }
+    .nav-icon {
+      color: var(--mat-sys-primary);
+    }
+    .avatar-image {
+      width: 3rem;
+    }
   }
 
-  .username,
-  .logout-button {
-    padding: 0.5rem 1rem;
-    font: var(--mat-sys-body-medium);
+  .user-menu {
+    // Styles of <mat-menu> only works on styles.scss file
   }
 }

@@ -62,28 +62,21 @@ export class Login {
     }
   }
 
-  // ===============
-  // DummyJSON docs:
-  // ===============
-  // username: 'emilys',
-  // password: 'emilyspass',
+  // COMPONENT LOGIC:
+  // Only render and navigate.
+  // API calls and localStorage to service
   async handleLogin() {
     if (this.authForm.valid) {
       const { username, password } = this.authForm.value;
       const response = await this.service.login(username!, password!);
 
-      // Valid credentials
+      // SUCCESS TRUE: Valid credentials
       if (response.success && response.data) {
         this.service.setItem('dummySession', JSON.stringify(response.data));
         this.loginError.set(null);
         this.router.navigate(['/products']);
 
-        // Invalid credentials
-      } else if (!response.success && response.data) {
-        console.log(response.error);
-        this.loginError.set('Invalid username or/and password.');
-
-        // Server error
+        // SUCCESS FALSE: Invalid credentials / Server error
       } else {
         console.log(response.error);
         this.loginError.set(response.error);
@@ -91,3 +84,9 @@ export class Login {
     }
   }
 }
+
+// ===============
+// DummyJSON docs:
+// ===============
+// username: 'emilys',
+// password: 'emilyspass',

@@ -7,12 +7,27 @@
     </nav>
     <span class="example-spacer"></span>
     <nav class="nav-icons">
-      <button matIconButton [matMenuTriggerFor]="menu" aria-label="user icon">
-        <mat-icon class="nav-icon">person</mat-icon>
+      <button class="user-button" [matMenuTriggerFor]="menu" aria-label="user icon">
+        <!-- <span class="username">{{ userData()?.username }}</span> -->
+        @if (userData()?.image) {
+          <img class="avatar-image" [src]="userData()?.image" alt="avatar image" />
+        } @else {
+          <mat-icon class="nav-icon">person</mat-icon>
+        }
       </button>
-      <mat-menu #menu="matMenu">
-        <span class="username">{{ userData()?.username }}</span>
-        <button class="logout-button" mat-menu-item (click)="logout()">Logout</button>
+      <mat-menu #menu="matMenu" class="user-menu">
+        <div class="user-line">
+          <img class="avatar-image" [src]="userData()?.image" alt="avatar image" />
+          <div class="user-info">
+            <span class="username">{{ userData()?.username }}</span>
+            <p>{{ userData()?.firstName }} {{ userData()?.lastName }}</p>
+          </div>
+        </div>
+
+        <button class="logout-button" mat-menu-item (click)="logout()">
+          <mat-icon class="logout-icon">logout</mat-icon>
+          Sign out
+        </button>
       </mat-menu>
     </nav>
   </mat-toolbar>

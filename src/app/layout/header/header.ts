@@ -6,7 +6,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatMenuModule } from '@angular/material/menu';
 
-import { UserDataModel } from '../../models/user.model';
+import { UserDataModel, UserStateModel } from '../../models/user.model';
 import { AuthService } from '../../services/auth-service';
 
 @Component({
@@ -27,33 +27,16 @@ export class Header {
   }
 
   async checkSession() {
-    let localStorageContent = this.service.getItem('dummySession');
-    if (localStorageContent) {
-      const dummySession: UserDataModel = await JSON.parse(localStorageContent);
-      if (dummySession.expiresAt <= Date.now()) {
-        if (dummySession.refreshToken) {
-          this.service.refreshSession(dummySession);
-          localStorageContent = this.service.getItem('dummySession');
-        } else {
-          this.service.removeItem('dummySession');
-          this.router.navigate(['/login']);
-        }
-      }
+    const userState: UserStateModel = await this.service.isLogged();
+    if (userState.success && userState.data) {
+      const dummySession = userState.data;
+      this.userData.set(dummySession);
     } else {
       this.router.navigate(['/login']);
     }
   }
 
-  async getUser() {
-    let localStorageContent = this.service.getItem('dummySession');
-    if (localStorageContent) {
-      const dummySession: UserDataModel = await JSON.parse(localStorageContent);
-      this.userData.set(dummySession);
-    }
-  }
-
   ngOnInit() {
     this.checkSession();
-    this.getUser();
   }
 }
