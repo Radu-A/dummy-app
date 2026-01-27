@@ -29,10 +29,13 @@ export class AuthService {
     try {
       localStorage.removeItem(itemName);
     } catch (error) {
-      throw `Error loading file in local storage: ${error}`;
+      throw `Error deleting file in local storage: ${error}`;
     }
   }
 
+  // =========
+  // API CALLS
+  // =========
   async login(username: string, password: string): Promise<UserStateModel> {
     const body = JSON.stringify({
       username: username,
@@ -51,6 +54,12 @@ export class AuthService {
       const userData: UserDataModel = { ...data, expiresAt: expirationTimestamp };
       if (userData.accessToken) {
         // CASE 1 - Valid credentials
+        const dummySession = {
+          success: true,
+          data: userData,
+          error: null,
+        };
+        this.setItem('dummySession', JSON.stringify(dummySession));
         return {
           success: true,
           data: userData,
@@ -60,8 +69,7 @@ export class AuthService {
         // CASE 2 - Invalid credentials
         return {
           success: false,
-          data: data.message, // check invalid credentials
-          error: data.message,
+          error: 'Invalid username and/or password.',
         };
       }
     } catch (error) {
@@ -75,8 +83,7 @@ export class AuthService {
   }
 
   async refreshSession(userData: UserDataModel) {
-    console.log('Refresh Token');
-
+    // **CHECK EXPIRATION TIME OF REFRESH TOKEN**
     try {
       const response = await fetch('https://dummyjson.com/auth/refresh', {
         method: 'POST',
@@ -88,12 +95,46 @@ export class AuthService {
         // credentials: 'include', // Include cookies (e.g., accessToken) in the request
       });
       const data: RefreshResponseModel = await response.json();
-      userData = { ...userData, accessToken: data.accessToken, refreshToken: data.refreshToken };
+      const expirationTimestamp = Date.now() + 3000;
+      userData = {
+        ...userData,
+        accessToken: data.accessToken,
+        refreshToken: data.refreshToken,
+        expiresAt: expirationTimestamp,
+      };
       this.setItem('dummySession', JSON.stringify(userData));
     } catch (error) {
       console.log(`Error refreshing token: ${error}`);
       throw `Error refreshing token: ${error}`;
     }
+  }
+
+  async isLogged(): Promise<UserStateModel> {
+    const localStorageContent = this.getItem('dummySession');
+    if (localStorageContent) {
+      const dummySession: UserDataModel = await JSON.parse(localStorageContent);
+      // Only checking is exists. Future steps:
+      // **CHECK EXPIRATION TIME OF REFRESH TOKEN**
+      if (dummySession.refreshToken) {
+        this.refreshSession(dummySession);
+        // Get new data session after refreshing token
+        const freshLocalStorageContent = this.getItem('dummySession');
+        if (freshLocalStorageContent) {
+          const freshDummySession = await JSON.parse(freshLocalStorageContent);
+          return {
+            success: true,
+            data: dummySession,
+            error: null,
+          };
+        } else {
+          return { success: false, error: 'Error refreshing token.' };
+        }
+      } else {
+        this.removeItem('dummySession');
+        return { success: false, error: 'Lapsed refresh token.' };
+      }
+    }
+    return { success: false, error: 'Not logged user.' };
   }
 }
 
