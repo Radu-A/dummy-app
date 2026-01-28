@@ -1,7 +1,7 @@
 import { Component, inject, signal } from '@angular/core';
 import { RouterLink, ActivatedRoute } from '@angular/router';
 import { Observable, catchError, map, startWith, of, tap } from 'rxjs';
-import { AsyncPipe } from '@angular/common';
+import { AsyncPipe, Location } from '@angular/common';
 
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
@@ -13,13 +13,14 @@ import { DetailsCard } from '../../../components/details-card/details-card';
 
 @Component({
   selector: 'app-product-details',
-  imports: [AsyncPipe, MatButtonModule, RouterLink, MatCardModule, DetailsCard],
+  imports: [AsyncPipe, MatButtonModule, MatCardModule, DetailsCard],
   templateUrl: './product-details.html',
   styleUrl: './product-details.scss',
 })
 export class ProductDetails {
   private service = inject(ProductService);
   private route = inject(ActivatedRoute);
+  private location = inject(Location);
   // Improvement:
   // paramsMap and pipe to direct connection with productState$
   private readonly id = signal<number>(Number(this.route.snapshot.params['id']));
@@ -44,4 +45,10 @@ export class ProductDetails {
       }),
     ),
   );
+
+  constructor() {}
+
+  goBack() {
+    this.location.back();
+  }
 }

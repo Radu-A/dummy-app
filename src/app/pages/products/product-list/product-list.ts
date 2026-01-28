@@ -65,4 +65,20 @@ export class ProductList {
     this.pageSize$.next(pageEvent.pageSize);
     this.pageIndex$.next(pageEvent.pageIndex);
   }
+
+  async checkParameters() {
+    const parameters = localStorage.getItem('dummyParams');
+    if (parameters) {
+      const { pageSize, pageIndex, inputValue } = await JSON.parse(parameters);
+      this.pageSize$.next(pageSize);
+      this.pageIndex$.next(pageIndex);
+      // Catch the output value from form-field
+      this.inputValue$.next(inputValue);
+      localStorage.removeItem('dummyParams');
+    }
+  }
+
+  ngOnInit() {
+    this.checkParameters();
+  }
 }
