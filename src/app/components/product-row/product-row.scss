@@ -1,0 +1,28 @@
+.row-container {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem;
+  height: 70px;
+  width: 100%;
+  .product-title {
+    height: 56px;
+  }
+  img {
+    max-height: 100%;
+  }
+  .star-icon {
+    color: rgb(241, 115, 31);
+  }
+
+  .spacer {
+    flex: 1;
+  }
+
+  .row-actions {
+    display: flex;
+    justify-content: space-between;
+    .price {
+      width: 100px;
+    }
+  }
+}

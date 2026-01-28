@@ -14,9 +14,13 @@
   }
 }
 
-.grid-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, auto));
-  gap: 1rem;
-  padding-top: 1.5rem;
+.pagination-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  .view-options {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
 }

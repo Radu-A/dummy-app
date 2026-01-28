@@ -4,6 +4,15 @@
 
 @if (response$ | async; as response) {
   <section class="pagination-section">
+    <div class="view-options">
+      <span>See as: </span>
+      <app-toggle-button
+        (outputValue)="toggleView($event)"
+        valueA="Grid"
+        valueB="List"
+      ></app-toggle-button>
+    </div>
+
     <mat-paginator
       [length]="response.total"
       [pageSizeOptions]="[15, 25, 50, 100]"
@@ -15,17 +24,20 @@
     </mat-paginator>
   </section>
   <section>
-    <div class="grid-container">
-      @for (product of response.products; track product.id) {
-        <div class="grid-cell">
-          <app-product-card
-            [product]="product"
-            [pageSize]="pageSize$ | async"
-            [pageIndex]="pageIndex$ | async"
-            [inputValue]="inputValue$ | async"
-          ></app-product-card>
-        </div>
-      }
-    </div>
+    @if (isGrid()) {
+      <app-product-grid
+        [productList]="response.products"
+        [pageSize]="pageSize$ | async"
+        [pageIndex]="pageIndex$ | async"
+        [inputValue]="inputValue$ | async"
+      ></app-product-grid>
+    } @else {
+      <app-product-listing
+        [productList]="response.products"
+        [pageSize]="pageSize$ | async"
+        [pageIndex]="pageIndex$ | async"
+        [inputValue]="inputValue$ | async"
+      ></app-product-listing>
+    }
   </section>
 }

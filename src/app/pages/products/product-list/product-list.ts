@@ -1,21 +1,23 @@
 // Angular
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { AsyncPipe } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
 // Third part
 import { BehaviorSubject, combineLatest, Observable, switchMap } from 'rxjs';
 // Material
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatButtonModule } from '@angular/material/button';
 import { MatPaginatorModule } from '@angular/material/paginator';
 // Own dependencies
 import { ResponseModel } from '../../../models/product.model';
 import { ProductService } from '../../../services/product-service';
 import { PageModel } from '../../../models/page.model';
 // Own components
-import { ProductCard } from '../../../components/product-card/product-card';
 import { SearchInput } from '../../../components/search-input/search-input';
+import { ProductGrid } from '../../../components/product-grid/product-grid';
+import { ProductListing } from '../../../components/product-listing/product-listing';
+import { ToggleButton } from '../../../components/toggle-button/toggle-button';
 
 @Component({
   selector: 'app-product-list',
@@ -24,16 +26,20 @@ import { SearchInput } from '../../../components/search-input/search-input';
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
+    MatButtonModule,
     MatPaginatorModule,
-    ProductCard,
     SearchInput,
+    ProductGrid,
+    ProductListing,
+    ToggleButton,
   ],
   templateUrl: './product-list.html',
   styleUrl: './product-list.scss',
 })
 export class ProductList {
   private readonly service = inject(ProductService);
-  private readonly router = inject(Router);
+
+  isGrid = signal(true);
 
   pageSize$ = new BehaviorSubject<number>(15);
   pageIndex$ = new BehaviorSubject<number>(0);
@@ -66,6 +72,7 @@ export class ProductList {
     this.pageIndex$.next(pageEvent.pageIndex);
   }
 
+  // Check on localStorage if there is search parameters
   async checkParameters() {
     const parameters = localStorage.getItem('dummyParams');
     if (parameters) {
@@ -78,7 +85,12 @@ export class ProductList {
     }
   }
 
+  toggleView(outputValue: boolean) {
+    this.isGrid.set(outputValue);
+  }
+
   ngOnInit() {
-    this.checkParameters();
+    // checkParameters not working yet
+    // this.checkParameters();
   }
 }

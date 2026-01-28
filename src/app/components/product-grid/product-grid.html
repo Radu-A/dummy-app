@@ -1,0 +1,12 @@
+<div class="grid-container">
+  @for (product of productList(); track product.id) {
+    <div class="grid-cell">
+      <app-product-card
+        [product]="product"
+        [pageSize]="pageSize"
+        [pageIndex]="pageIndex"
+        [inputValue]="inputValue"
+      ></app-product-card>
+    </div>
+  }
+</div>
