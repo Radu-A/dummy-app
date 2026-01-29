@@ -76,11 +76,12 @@ export class ProductList {
   async checkParameters() {
     const parameters = localStorage.getItem('dummyParams');
     if (parameters) {
-      const { pageSize, pageIndex, inputValue } = await JSON.parse(parameters);
+      const { pageSize, pageIndex, inputValue, isGrid } = await JSON.parse(parameters);
       this.pageSize$.next(pageSize);
       this.pageIndex$.next(pageIndex);
       // Catch the output value from form-field
       this.inputValue$.next(inputValue);
+      this.isGrid.set(isGrid);
       localStorage.removeItem('dummyParams');
     }
   }
@@ -91,6 +92,6 @@ export class ProductList {
 
   ngOnInit() {
     // checkParameters not working yet
-    // this.checkParameters();
+    this.checkParameters();
   }
 }

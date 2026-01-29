@@ -2,9 +2,9 @@
   @for (product of productList(); track product.id) {
     <app-product-row
       [product]="product"
-      [pageSize]="pageSize"
-      [pageIndex]="pageIndex"
-      [inputValue]="inputValue"
+      [pageSize]="pageSize()"
+      [pageIndex]="pageIndex()"
+      [inputValue]="inputValue()"
     ></app-product-row>
   }
 </div>

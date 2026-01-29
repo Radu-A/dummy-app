@@ -27,9 +27,12 @@
     @if (isGrid()) {
       <app-product-grid
         [productList]="response.products"
-        [pageSize]="pageSize$ | async"
-        [pageIndex]="pageIndex$ | async"
-        [inputValue]="inputValue$ | async"
+        [parameters]="{
+          pageSize: pageSize$ | async,
+          pageIndex: pageIndex$ | async,
+          inputValue: inputValue$ | async,
+          isGrid: isGrid(),
+        }"
       ></app-product-grid>
     } @else {
       <app-product-listing

@@ -16,7 +16,8 @@ export class SearchInput {
   searchInput = new FormControl('');
 
   inputValue$ = this.searchInput.valueChanges.pipe(
-    startWith(''),
+    // Trigger a first change and recharge response$ in father
+    // startWith(''),
     debounceTime(1000),
     distinctUntilChanged(),
   );
