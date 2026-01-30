@@ -37,6 +37,6 @@ export class Header {
   }
 
   ngOnInit() {
-    this.checkSession();
+    // this.checkSession();
   }
 }

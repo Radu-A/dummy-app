@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { RefreshResponseModel, UserDataModel, UserStateModel } from '../models/user.model';
+import { I } from '@angular/cdk/keycodes';
 
 @Injectable({
   providedIn: 'root',
@@ -95,7 +96,8 @@ export class AuthService {
         // credentials: 'include', // Include cookies (e.g., accessToken) in the request
       });
       const data: RefreshResponseModel = await response.json();
-      const expirationTimestamp = Date.now() + 3000;
+      // Short expiration for develop
+      const expirationTimestamp = Date.now() + 300000;
       userData = {
         ...userData,
         accessToken: data.accessToken,
@@ -103,9 +105,13 @@ export class AuthService {
         expiresAt: expirationTimestamp,
       };
       this.setItem('dummySession', JSON.stringify(userData));
+      // Refreshing went right
+      return true;
     } catch (error) {
+      this.removeItem('dummySession');
       console.log(`Error refreshing token: ${error}`);
-      throw `Error refreshing token: ${error}`;
+      // Refreshing went wrong
+      return false;
     }
   }
 
@@ -113,17 +119,17 @@ export class AuthService {
     const localStorageContent = this.getItem('dummySession');
     if (localStorageContent) {
       const dummySession: UserDataModel = await JSON.parse(localStorageContent);
-      // Only checking is exists. Future steps:
+      // Only checking if exists. Future steps:
       // **CHECK EXPIRATION TIME OF REFRESH TOKEN**
       if (dummySession.refreshToken) {
         this.refreshSession(dummySession);
         // Get new data session after refreshing token
         const freshLocalStorageContent = this.getItem('dummySession');
         if (freshLocalStorageContent) {
-          const freshDummySession = await JSON.parse(freshLocalStorageContent);
+          const freshDummySession: UserDataModel = await JSON.parse(freshLocalStorageContent);
           return {
             success: true,
-            data: dummySession,
+            data: freshDummySession,
             error: null,
           };
         } else {
@@ -135,6 +141,19 @@ export class AuthService {
       }
     }
     return { success: false, error: 'Not logged user.' };
+  }
+
+  async isAuthenticated(): Promise<boolean> {
+    const localStorageContent = this.getItem('dummySession');
+    if (localStorageContent) {
+      const dummySession: UserDataModel = await JSON.parse(localStorageContent);
+      // Only checking if exists. Future steps:
+      // **CHECK EXPIRATION TIME OF REFRESH TOKEN**
+      if (dummySession.refreshToken) {
+        return await this.refreshSession(dummySession);
+      }
+    }
+    return false;
   }
 }
 

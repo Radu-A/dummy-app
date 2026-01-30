@@ -1,5 +1,8 @@
 import { Routes } from '@angular/router';
 import { Login } from './pages/login/login';
+
+import { authGuard } from './guards/auth-guard';
+
 import { Register } from './pages/register/register';
 import { MainLayout } from './layout/main-layout/main-layout';
 import { ProductList } from './pages/products/product-list/product-list';
@@ -25,6 +28,7 @@ export const routes: Routes = [
     children: [
       {
         path: 'products',
+        canActivate: [authGuard],
         children: [
           {
             path: '',
