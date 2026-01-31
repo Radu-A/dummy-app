@@ -62,27 +62,47 @@ export class Login {
     }
   }
 
-  // COMPONENT LOGIC:
+  // COMPONENT LOGIC
   // Only render and navigate.
   // API calls and localStorage to service
-  async handleLogin() {
-    if (this.authForm.valid) {
-      const { username, password } = this.authForm.value;
-      const response = await this.service.login(username!, password!);
-
+  handleLogin() {
+    if (!this.authForm.valid && !this.authForm.value) return;
+    const { username, password } = this.authForm.value;
+    this.service.login(username!, password!).subscribe({
       // SUCCESS TRUE: Valid credentials
-      if (response.success && response.data) {
-        this.service.setItem('dummySession', JSON.stringify(response.data));
+      next: () => {
         this.loginError.set(null);
         this.router.navigate(['/products']);
-
-        // SUCCESS FALSE: Invalid credentials / Server error
-      } else {
-        console.log(response.error);
-        this.loginError.set(response.error);
-      }
-    }
+      },
+      // SUCCESS FALSE: Invalid credentials / Server error
+      error: (err) => {
+        this.loginError.set(err.error.message);
+        console.log('Error: ', err);
+      },
+    });
   }
+
+  // IMPERATIVE LOGIC:
+  // Only render and navigate.
+  // API calls and localStorage to service
+  // async handleLogin() {
+  //   if (this.authForm.valid) {
+  //     const { username, password } = this.authForm.value;
+  //     const response = await this.service.login(username!, password!);
+
+  //     // SUCCESS TRUE: Valid credentials
+  //     if (response.success && response.data) {
+  //       this.service.setItem('dummySession', JSON.stringify(response.data));
+  //       this.loginError.set(null);
+  //       this.router.navigate(['/products']);
+
+  //       // SUCCESS FALSE: Invalid credentials / Server error
+  //     } else {
+  //       console.log(response.error);
+  //       this.loginError.set(response.error);
+  //     }
+  //   }
+  // }
 }
 
 // ===============

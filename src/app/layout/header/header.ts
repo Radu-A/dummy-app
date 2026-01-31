@@ -25,18 +25,4 @@ export class Header {
     this.service.removeItem('dummySession');
     this.router.navigate(['/login']);
   }
-
-  async checkSession() {
-    const userState: UserStateModel = await this.service.isLogged();
-    if (userState.success && userState.data) {
-      const dummySession = userState.data;
-      this.userData.set(dummySession);
-    } else {
-      this.router.navigate(['/login']);
-    }
-  }
-
-  ngOnInit() {
-    // this.checkSession();
-  }
 }

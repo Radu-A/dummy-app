@@ -1,17 +1,28 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
+import { BehaviorSubject, catchError, map, Observable, tap, throwError } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 import { RefreshResponseModel, UserDataModel, UserStateModel } from '../models/user.model';
-import { I } from '@angular/cdk/keycodes';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  baseUrl = 'https://dummyjson.com/auth/login';
+  loginUrl = 'https://dummyjson.com/auth/login';
+  refreshUrl = 'https://dummyjson.com/auth/refresh';
+  http = inject(HttpClient);
+  router = inject(Router);
 
-  // =============
-  // LOCAL STORAGE
-  // =============
+  userState$ = new BehaviorSubject<UserStateModel>({ success: false });
+
+  constructor() {
+    this.loadUserState();
+  }
+
+  // =====================
+  // LOCAL STORAGE METHODS
+  // =====================
   setItem(itemName: string, item: string) {
     try {
       localStorage.setItem(itemName, item);
@@ -34,56 +45,109 @@ export class AuthService {
     }
   }
 
-  // =========
-  // API CALLS
-  // =========
-  async login(username: string, password: string): Promise<UserStateModel> {
-    const body = JSON.stringify({
+  // ==================
+  // REACTIVE METHODS
+  // ==================
+  login(username: string, password: string) {
+    const body = {
       username: username,
       password: password,
       expiresInMins: 30, // optional, defaults to 60
-    });
-    try {
-      const response = await fetch(this.baseUrl, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: body,
-      });
-      const data = await response.json();
-      const expirationTimestamp = Date.now() + 3000;
-      // const expirationTimestamp = Date.now() + 1800000;
-      const userData: UserDataModel = { ...data, expiresAt: expirationTimestamp };
-      if (userData.accessToken) {
-        // CASE 1 - Valid credentials
-        const dummySession = {
+    };
+    return this.http.post<UserDataModel>(this.loginUrl, body).pipe(
+      // CASE 1 - Valid credentials
+      tap((data) => {
+        console.log(`CASE 1`);
+        const expirationTimestamp = Date.now() + 300000;
+        const userData: UserDataModel = { ...data, expiresAt: expirationTimestamp };
+        this.userState$.next({
           success: true,
           data: userData,
-          error: null,
-        };
-        this.setItem('dummySession', JSON.stringify(dummySession));
-        return {
-          success: true,
-          data: userData,
-          error: null,
-        };
-      } else {
-        // CASE 2 - Invalid credentials
-        return {
-          success: false,
-          error: 'Invalid username and/or password.',
-        };
+        });
+        this.setItem('dummySession', JSON.stringify(this.userState$.value.data));
+      }),
+      // CASE 2 - Error
+      // catchError((err) => {
+      //   console.log(`CASE 2`);
+
+      //   this.userState.next({
+      //     success: false,
+      //     error: err.error.message,
+      //   });
+      //   this.removeItem('dummySession');
+      //   return throwError(() => err);
+      // }),
+    );
+  }
+
+  isAuthenticated(): Observable<boolean> {
+    console.log(`userState$ at isAuthenticated: ${this.userState$.value.success}`);
+
+    return this.userState$.pipe(map((data) => data.success));
+  }
+
+  async loadUserState() {
+    console.log('loadUserState');
+
+    const localStorageContent = this.getItem('dummySession');
+    if (localStorageContent) {
+      const dummySession: UserDataModel = await JSON.parse(localStorageContent);
+      // Only checking if exists. Future steps:
+      // **CHECK EXPIRATION TIME OF REFRESH TOKEN**
+      if (dummySession.refreshToken) {
+        this.refreshSession(dummySession).subscribe({
+          next: () => {
+            console.log(`dummySession at loadUserState: ${dummySession.expiresAt}`);
+            console.log(`userState$ at loadUserState: ${this.userState$.value.data?.expiresAt}`);
+            console.log('Refresh successfully');
+          },
+          error: (err) => {
+            console.log('Error in refresh');
+          },
+        });
       }
-    } catch (error) {
-      console.error(error);
-      // CASE 3 - Server error
-      return {
+    } else {
+      this.userState$.next({
         success: false,
-        error: `Error in service connection: ${error}`,
-      };
+      });
     }
   }
 
-  async refreshSession(userData: UserDataModel) {
+  refreshSession(userData: UserDataModel) {
+    // **CHECK EXPIRATION TIME OF REFRESH TOKEN**
+    const body = {
+      refreshToken: userData.refreshToken,
+      expiresInMins: 30,
+    };
+    return this.http.post<RefreshResponseModel>(this.refreshUrl, body).pipe(
+      tap((res) => {
+        const expirationTimestamp = Date.now() + 300000;
+        const freshData: UserDataModel = {
+          ...userData,
+          accessToken: res.accessToken,
+          refreshToken: res.refreshToken,
+          expiresAt: expirationTimestamp,
+        };
+        this.userState$.next({
+          success: true,
+          data: freshData,
+        });
+        console.log(`userData at refreshSession: ${userData}`);
+        console.log(`freshData at refreshSession: ${freshData}`);
+        console.log(`userState at refreshSession: ${this.userState$.value.data}`);
+        this.setItem('dummySession', JSON.stringify(this.userState$.value.data));
+      }),
+      map((res) => {
+        return true;
+      }),
+      catchError((err) => {
+        this.removeItem('dummySession');
+        return throwError(() => err);
+      }),
+    );
+  }
+
+  async oldRefreshSession(userData: UserDataModel) {
     // **CHECK EXPIRATION TIME OF REFRESH TOKEN**
     try {
       const response = await fetch('https://dummyjson.com/auth/refresh', {
@@ -113,47 +177,6 @@ export class AuthService {
       // Refreshing went wrong
       return false;
     }
-  }
-
-  async isLogged(): Promise<UserStateModel> {
-    const localStorageContent = this.getItem('dummySession');
-    if (localStorageContent) {
-      const dummySession: UserDataModel = await JSON.parse(localStorageContent);
-      // Only checking if exists. Future steps:
-      // **CHECK EXPIRATION TIME OF REFRESH TOKEN**
-      if (dummySession.refreshToken) {
-        this.refreshSession(dummySession);
-        // Get new data session after refreshing token
-        const freshLocalStorageContent = this.getItem('dummySession');
-        if (freshLocalStorageContent) {
-          const freshDummySession: UserDataModel = await JSON.parse(freshLocalStorageContent);
-          return {
-            success: true,
-            data: freshDummySession,
-            error: null,
-          };
-        } else {
-          return { success: false, error: 'Error refreshing token.' };
-        }
-      } else {
-        this.removeItem('dummySession');
-        return { success: false, error: 'Lapsed refresh token.' };
-      }
-    }
-    return { success: false, error: 'Not logged user.' };
-  }
-
-  async isAuthenticated(): Promise<boolean> {
-    const localStorageContent = this.getItem('dummySession');
-    if (localStorageContent) {
-      const dummySession: UserDataModel = await JSON.parse(localStorageContent);
-      // Only checking if exists. Future steps:
-      // **CHECK EXPIRATION TIME OF REFRESH TOKEN**
-      if (dummySession.refreshToken) {
-        return await this.refreshSession(dummySession);
-      }
-    }
-    return false;
   }
 }
 
