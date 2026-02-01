@@ -7,7 +7,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatMenuModule } from '@angular/material/menu';
 
 import { UserDataModel } from '../../models/user.model';
-import { AuthService } from '../../services/auth-service';
+import { StorageService } from '../../services/storage-service';
 
 @Component({
   selector: 'app-header',
@@ -17,12 +17,13 @@ import { AuthService } from '../../services/auth-service';
 })
 export class Header {
   router = inject(Router);
-  private readonly service = inject(AuthService);
+
+  private readonly storageService = inject(StorageService);
 
   userData = signal<UserDataModel | undefined>(undefined);
 
   logout() {
-    this.service.removeItem('dummySession');
+    this.storageService.removeItem('dummySession');
     this.router.navigate(['/login']);
   }
 }

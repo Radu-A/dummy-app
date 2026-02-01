@@ -6,14 +6,19 @@ import { Router } from '@angular/router';
 import { UserDataModel } from '../models/user.model';
 import { SessionModel, RefreshResponseModel } from '../models/auth.model';
 
+import { StorageService } from './storage-service';
+
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
   loginUrl = 'https://dummyjson.com/auth/login';
   refreshUrl = 'https://dummyjson.com/auth/refresh';
+
   http = inject(HttpClient);
   router = inject(Router);
+
+  storageService = inject(StorageService);
 
   // Initialize as undefined cause we need one state more:
   // auth-guard call "isAuthenticated()" before
@@ -22,31 +27,6 @@ export class AuthService {
 
   constructor() {
     this.loadUserState();
-  }
-
-  // =====================
-  // LOCAL STORAGE METHODS
-  // =====================
-  setItem(itemName: string, item: string) {
-    try {
-      localStorage.setItem(itemName, item);
-    } catch (error) {
-      throw `Error saving file in local storage: ${error}`;
-    }
-  }
-  getItem(itemName: string) {
-    try {
-      return localStorage.getItem(itemName);
-    } catch (error) {
-      throw `Error loading file in local storage: ${error}`;
-    }
-  }
-  removeItem(itemName: string) {
-    try {
-      localStorage.removeItem(itemName);
-    } catch (error) {
-      throw `Error deleting file in local storage: ${error}`;
-    }
   }
 
   // ==================
@@ -68,7 +48,7 @@ export class AuthService {
           success: true,
           data: userData,
         });
-        this.setItem('dummySession', JSON.stringify(this.userState$.value.data));
+        this.storageService.setItem('dummySession', JSON.stringify(this.userState$.value.data));
       }),
       // CASE 2 - Error
       // catchError((err) => {
@@ -90,7 +70,7 @@ export class AuthService {
   }
 
   loadUserState() {
-    const localStorageContent = this.getItem('dummySession');
+    const localStorageContent = this.storageService.getItem('dummySession');
     if (localStorageContent) {
       const dummySession: UserDataModel = JSON.parse(localStorageContent);
       // Only checking if exists. Future steps:
@@ -133,14 +113,14 @@ export class AuthService {
           success: true,
           data: freshData,
         });
-        this.setItem('dummySession', JSON.stringify(this.userState$.value.data));
+        this.storageService.setItem('dummySession', JSON.stringify(this.userState$.value.data));
       }),
       map((res) => {
         return true;
       }),
       // Refreshing went wrong
       catchError((error) => {
-        this.removeItem('dummySession');
+        this.storageService.removeItem('dummySession');
         this.userState$.next({
           success: false,
           error: error,
