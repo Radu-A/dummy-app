@@ -6,7 +6,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatMenuModule } from '@angular/material/menu';
 
-import { UserDataModel, UserStateModel } from '../../models/user.model';
+import { UserDataModel } from '../../models/user.model';
 import { AuthService } from '../../services/auth-service';
 
 @Component({

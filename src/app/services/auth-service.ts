@@ -3,7 +3,8 @@ import { BehaviorSubject, catchError, map, Observable, tap, throwError } from 'r
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 
-import { RefreshResponseModel, UserDataModel, UserStateModel } from '../models/user.model';
+import { UserDataModel } from '../models/user.model';
+import { SessionModel, RefreshResponseModel } from '../models/auth.model';
 
 @Injectable({
   providedIn: 'root',
@@ -17,7 +18,7 @@ export class AuthService {
   // Initialize as undefined cause we need one state more:
   // auth-guard call "isAuthenticated()" before
   // before constructor call "loadUserState()"
-  userState$ = new BehaviorSubject<UserStateModel>({ success: undefined });
+  userState$ = new BehaviorSubject<SessionModel>({ success: undefined });
 
   constructor() {
     this.loadUserState();

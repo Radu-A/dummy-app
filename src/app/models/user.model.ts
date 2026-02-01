@@ -9,14 +9,3 @@ export interface UserDataModel {
   refreshToken: string;
   expiresAt: number;
 }
-
-export interface UserStateModel {
-  success: boolean | undefined;
-  data?: UserDataModel;
-  error?: any;
-}
-
-export interface RefreshResponseModel {
-  accessToken: string;
-  refreshToken: string;
-}
