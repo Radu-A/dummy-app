@@ -11,7 +11,7 @@ export interface UserDataModel {
 }
 
 export interface UserStateModel {
-  success: boolean;
+  success: boolean | undefined;
   data?: UserDataModel;
   error?: any;
 }
