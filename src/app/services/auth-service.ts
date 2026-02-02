@@ -25,7 +25,7 @@ export class AuthService {
   // Initialize as undefined cause we need one state more:
   // auth-guard call "isAuthenticated()" before
   // before constructor call "loadUserState()"
-  userState$ = new BehaviorSubject<SessionModel>({ success: undefined });
+  session$ = new BehaviorSubject<SessionModel>({ success: undefined });
 
   constructor() {
     this.loadUserState();
@@ -46,11 +46,11 @@ export class AuthService {
         console.log(`CASE 1`);
         const expirationTimestamp = Date.now() + 300000;
         const userData: UserDataModel = { ...data, expiresAt: expirationTimestamp };
-        this.userState$.next({
+        this.session$.next({
           success: true,
           data: userData,
         });
-        this.storageService.setItem('dummySession', JSON.stringify(this.userState$.value.data));
+        this.storageService.setItem('dummySession', JSON.stringify(this.session$.value.data));
       }),
       // CASE 2 - Error
       // catchError((err) => {
@@ -68,62 +68,82 @@ export class AuthService {
 
   isAuthenticated(): Observable<boolean | undefined> {
     // Return only true/false to auth-guard
-    return this.userState$.pipe(map((data) => data.success));
+    return this.session$.pipe(map((data) => data.success));
   }
 
   loadUserState() {
     const localStorageContent = this.storageService.getItem('dummySession');
-    if (localStorageContent) {
-      const dummySession: UserDataModel = JSON.parse(localStorageContent);
-      // Only checking if exists. Future steps:
-      // **CHECK EXPIRATION TIME OF REFRESH TOKEN**
+
+    // CASE 1 - Nothing in local storage
+    // no access token + no refresh token
+    if (!localStorageContent)
+      return this.session$.next({
+        success: false,
+      });
+    const dummySession: UserDataModel = JSON.parse(localStorageContent);
+
+    // CASE 2 - Session active (happy path!)
+    if (dummySession.expiresAt > Date.now()) {
+      console.log('dummySession.expiresAt GREATER THAN Date.now()');
+
+      this.session$.next({
+        success: true,
+        data: dummySession,
+      });
+      this.storageService.setItem('dummySession', JSON.stringify(this.session$.value.data));
+      // CASE 3 - Lapsed access token
+    } else {
+      console.log('dummySession.expiresAt LESS THAN Date.now()');
+
+      // **NOT CHECKING EXPIRATION TIME OF REFRESH TOKEN**
       if (dummySession.refreshToken) {
         this.refreshSession(dummySession).subscribe({
+          // CASE 1 - Refreshing went right
           next: () => {
             console.log('Refresh successfully.');
           },
+          // CASE 2 - Refreshing went wrong
           error: (error) => {
             console.log('Load User State Error:', error);
           },
         });
+        // CASE 2 - No refresh token
+      } else {
+        console.log('There is not refresh token.');
       }
-    } else {
-      this.userState$.next({
-        success: false,
-      });
     }
   }
 
   refreshSession(userData: UserDataModel) {
-    // **CHECK EXPIRATION TIME OF REFRESH TOKEN**
+    // **NOT CHECKING EXPIRATION TIME OF REFRESH TOKEN**
     const body = {
       refreshToken: userData.refreshToken, // Optional, if not provided, the server will use the cookie
       expiresInMins: 30, // optional (FOR ACCESS TOKEN), defaults to 60
     };
     return this.http.post<RefreshResponseModel>(this.refreshUrl, body).pipe(
-      // Refreshing went right
+      // CASE 1 - Refreshing went right
       tap((res) => {
         // Only five minutes of expiration time for develop
-        const expirationTimestamp = Date.now() + 300000;
+        const expirationTimestamp = Date.now() + 5000;
         const freshData: UserDataModel = {
           ...userData,
           accessToken: res.accessToken,
           refreshToken: res.refreshToken,
           expiresAt: expirationTimestamp,
         };
-        this.userState$.next({
+        this.session$.next({
           success: true,
           data: freshData,
         });
-        this.storageService.setItem('dummySession', JSON.stringify(this.userState$.value.data));
+        this.storageService.setItem('dummySession', JSON.stringify(this.session$.value.data));
       }),
       map((res) => {
         return true;
       }),
-      // Refreshing went wrong
+      // CASE 2 - Refreshing went wrong
       catchError((error) => {
         this.storageService.removeItem('dummySession');
-        this.userState$.next({
+        this.session$.next({
           success: false,
           error: error,
         });
