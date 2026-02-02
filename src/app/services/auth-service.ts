@@ -3,6 +3,8 @@ import { BehaviorSubject, catchError, map, Observable, tap, throwError } from 'r
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 
+import { environment } from '../../environments/environment.development';
+
 import { UserDataModel } from '../models/user.model';
 import { SessionModel, RefreshResponseModel } from '../models/auth.model';
 
@@ -12,8 +14,8 @@ import { StorageService } from './storage-service';
   providedIn: 'root',
 })
 export class AuthService {
-  loginUrl = 'https://dummyjson.com/auth/login';
-  refreshUrl = 'https://dummyjson.com/auth/refresh';
+  loginUrl = `${environment.apiUrl}/auth/login`;
+  refreshUrl = `${environment.apiUrl}/auth/refresh`;
 
   http = inject(HttpClient);
   router = inject(Router);

@@ -2,14 +2,16 @@ import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
+import { environment } from '../../environments/environment.development';
+
 import { ProductModel, ResponseModel } from '../models/product.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ProductService {
-  productsUrl = 'https://dummyjson.com/products/search?q=';
-  oneProductUrl = 'https://dummyjson.com/products/';
+  productsUrl = `${environment.apiUrl}/products/search?q=`;
+  oneProductUrl = `${environment.apiUrl}/products/`;
   httpClient = inject(HttpClient);
 
   getProducts(total: number, index: number, term: string | null): Observable<ResponseModel> {
