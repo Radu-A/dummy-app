@@ -12,7 +12,4 @@ import { ProductRow } from '../product-row/product-row';
 })
 export class ProductListing {
   productList: InputSignal<ProductModel[]> = input.required();
-  pageSize = input.required();
-  pageIndex = input.required();
-  inputValue = input.required();
 }

@@ -12,5 +12,4 @@ import { ProductCard } from '../product-card/product-card';
 })
 export class ProductGrid {
   productList: InputSignal<ProductModel[]> = input.required();
-  parameters = input.required();
 }

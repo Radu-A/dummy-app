@@ -24,6 +24,7 @@ export class Header {
 
   logout() {
     this.storageService.removeItem('dummySession');
+    this.storageService.removeItem('dummyParams');
     this.router.navigate(['/login']);
   }
 }

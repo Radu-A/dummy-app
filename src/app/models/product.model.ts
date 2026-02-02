@@ -38,3 +38,10 @@ export interface ResponseModel {
   products: ProductModel[];
   total: number;
 }
+
+export interface ParametersModel {
+  pageSize: number;
+  pageIndex: number;
+  inputValue: string | null;
+  isGrid?: boolean;
+}

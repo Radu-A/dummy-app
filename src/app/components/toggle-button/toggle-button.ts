@@ -1,6 +1,10 @@
-import { Component, input, output, signal } from '@angular/core';
+import { Component, inject, input, model } from '@angular/core';
 
 import { MatButtonModule } from '@angular/material/button';
+
+import { ParametersModel } from '../../models/product.model';
+
+import { StorageService } from '../../services/storage-service';
 
 @Component({
   selector: 'app-toggle-button',
@@ -9,13 +13,29 @@ import { MatButtonModule } from '@angular/material/button';
   styleUrl: './toggle-button.scss',
 })
 export class ToggleButton {
-  outputValue = output<boolean>();
-  isTrue = signal(true);
-  valueA = input.required();
-  valueB = input.required();
+  private readonly storageService = inject(StorageService);
+
+  // Two-way binding with his parent
+  // ("isGrid" in product-list)
+  isTrue = model.required<boolean>();
+
+  // Type of view what you want when "true"
+  labelTrue = input.required();
+  // Type of view what you want when "false"
+  labelFalse = input.required();
+
+  parameters = input.required<ParametersModel>();
 
   toggleValue() {
+    // Invert value
     this.isTrue.set(!this.isTrue());
-    this.outputValue.emit(this.isTrue());
+    // Refresh values in local storage
+    const parameters = {
+      pageSize: this.parameters().pageSize,
+      pageIndex: this.parameters().pageIndex,
+      inputValue: this.parameters().inputValue,
+      isGrid: this.isTrue(),
+    };
+    this.storageService.setItem('dummyParams', JSON.stringify(parameters));
   }
 }

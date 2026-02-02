@@ -16,10 +16,8 @@ import { ProductModel } from '../../models/product.model';
 export class ProductCard {
   private readonly router = inject(Router);
   product: InputSignal<ProductModel> = input.required();
-  parameters = input.required();
 
   goToDetails() {
-    localStorage.setItem('dummyParams', JSON.stringify(this.parameters()));
     this.router.navigate(['products/details', this.product().id]);
   }
 }

@@ -7,9 +7,14 @@
     <div class="view-options">
       <span>See as: </span>
       <app-toggle-button
-        (outputValue)="toggleView($event)"
-        valueA="Grid"
-        valueB="List"
+        [(isTrue)]="isGrid"
+        labelTrue="List"
+        labelFalse="Grid"
+        [parameters]="{
+          pageSize: this.pageSize$.value,
+          pageIndex: this.pageIndex$.value,
+          inputValue: this.inputValue$.value,
+        }"
       ></app-toggle-button>
     </div>
 
@@ -25,22 +30,9 @@
   </section>
   <section>
     @if (isGrid()) {
-      <app-product-grid
-        [productList]="response.products"
-        [parameters]="{
-          pageSize: pageSize$ | async,
-          pageIndex: pageIndex$ | async,
-          inputValue: inputValue$ | async,
-          isGrid: isGrid(),
-        }"
-      ></app-product-grid>
+      <app-product-grid [productList]="response.products"></app-product-grid>
     } @else {
-      <app-product-listing
-        [productList]="response.products"
-        [pageSize]="pageSize$ | async"
-        [pageIndex]="pageIndex$ | async"
-        [inputValue]="inputValue$ | async"
-      ></app-product-listing>
+      <app-product-listing [productList]="response.products"></app-product-listing>
     }
   </section>
 }

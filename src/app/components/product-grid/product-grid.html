@@ -1,7 +1,7 @@
 <div class="grid-container">
   @for (product of productList(); track product.id) {
     <div class="grid-cell">
-      <app-product-card [product]="product" [parameters]="parameters()"></app-product-card>
+      <app-product-card [product]="product"></app-product-card>
     </div>
   }
 </div>
