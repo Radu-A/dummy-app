@@ -25,7 +25,7 @@ export class AuthService {
   // Initialize as undefined cause we need one state more:
   // auth-guard call "isAuthenticated()" before
   // before constructor call "loadUserState()"
-  session$ = new BehaviorSubject<SessionModel>({ success: undefined });
+  sessionData$ = new BehaviorSubject<SessionModel>({ success: undefined });
 
   constructor() {
     this.loadUserState();
@@ -46,11 +46,11 @@ export class AuthService {
         console.log(`CASE 1`);
         const expirationTimestamp = Date.now() + 300000;
         const userData: UserDataModel = { ...data, expiresAt: expirationTimestamp };
-        this.session$.next({
+        this.sessionData$.next({
           success: true,
           data: userData,
         });
-        this.storageService.setItem('dummySession', JSON.stringify(this.session$.value.data));
+        this.storageService.setItem('dummySession', JSON.stringify(this.sessionData$.value.data));
       }),
       // CASE 2 - Error
       // catchError((err) => {
@@ -68,7 +68,11 @@ export class AuthService {
 
   isAuthenticated(): Observable<boolean | undefined> {
     // Return only true/false to auth-guard
-    return this.session$.pipe(map((data) => data.success));
+    return this.sessionData$.pipe(map((data) => data.success));
+  }
+
+  getSessionData(): Observable<UserDataModel | undefined> {
+    return this.sessionData$.pipe(map((session) => session.data));
   }
 
   loadUserState() {
@@ -77,7 +81,7 @@ export class AuthService {
     // CASE 1 - Nothing in local storage
     // no access token + no refresh token
     if (!localStorageContent)
-      return this.session$.next({
+      return this.sessionData$.next({
         success: false,
       });
     const dummySession: UserDataModel = JSON.parse(localStorageContent);
@@ -86,11 +90,11 @@ export class AuthService {
     if (dummySession.expiresAt > Date.now()) {
       console.log('dummySession.expiresAt GREATER THAN Date.now()');
 
-      this.session$.next({
+      this.sessionData$.next({
         success: true,
         data: dummySession,
       });
-      this.storageService.setItem('dummySession', JSON.stringify(this.session$.value.data));
+      this.storageService.setItem('dummySession', JSON.stringify(this.sessionData$.value.data));
       // CASE 3 - Lapsed access token
     } else {
       console.log('dummySession.expiresAt LESS THAN Date.now()');
@@ -131,11 +135,11 @@ export class AuthService {
           refreshToken: res.refreshToken,
           expiresAt: expirationTimestamp,
         };
-        this.session$.next({
+        this.sessionData$.next({
           success: true,
           data: freshData,
         });
-        this.storageService.setItem('dummySession', JSON.stringify(this.session$.value.data));
+        this.storageService.setItem('dummySession', JSON.stringify(this.sessionData$.value.data));
       }),
       map((res) => {
         return true;
@@ -143,7 +147,7 @@ export class AuthService {
       // CASE 2 - Refreshing went wrong
       catchError((error) => {
         this.storageService.removeItem('dummySession');
-        this.session$.next({
+        this.sessionData$.next({
           success: false,
           error: error,
         });
