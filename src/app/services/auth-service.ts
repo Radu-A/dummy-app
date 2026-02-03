@@ -84,8 +84,6 @@ export class AuthService {
 
     // CASE 2 - Session active (happy path!)
     if (dummySession.expiresAt > Date.now()) {
-      console.log('dummySession.expiresAt GREATER THAN Date.now()');
-
       this.sessionData$.next({
         success: true,
         data: dummySession,
@@ -93,8 +91,6 @@ export class AuthService {
       this.storageService.setItem('dummySession', JSON.stringify(this.sessionData$.value.data));
       // CASE 3 - Lapsed access token
     } else {
-      console.log('dummySession.expiresAt LESS THAN Date.now()');
-
       // **NOT CHECKING EXPIRATION TIME OF REFRESH TOKEN**
       if (dummySession.refreshToken) {
         this.refreshSession(dummySession).subscribe({
@@ -124,7 +120,7 @@ export class AuthService {
       // CASE 1 - Refreshing went right
       tap((res) => {
         // Only five minutes of expiration time for develop
-        const expirationTimestamp = Date.now() + 5000;
+        const expirationTimestamp = Date.now() + 300000;
         const freshData: UserDataModel = {
           ...userData,
           accessToken: res.accessToken,
