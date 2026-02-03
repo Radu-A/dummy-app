@@ -27,10 +27,6 @@ export class AuthService {
   // before constructor call "loadUserState()"
   sessionData$ = new BehaviorSubject<SessionModel>({ success: undefined });
 
-  constructor() {
-    this.loadUserState();
-  }
-
   // ==================
   // REACTIVE METHODS
   // ==================

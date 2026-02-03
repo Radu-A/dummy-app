@@ -1,0 +1,12 @@
+storage-service:
+- asíncronía
+- item-any
+
+rest-service:
+- todas las llamadas a la API
+
+
+interceptores:
+- capturar errores ej: 404 -> alerta
+- cada vez que detecte un http call -> loading
+- cada vez que detecte un http -> buscar token e introducir en llamada
