@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
 import { Login } from './pages/login/login';
 
-import { authGuard } from './guards/auth-guard';
+import { authGuard } from './others/guards/auth-guard';
 
 import { Register } from './pages/register/register';
 import { MainLayout } from './layout/main-layout/main-layout';

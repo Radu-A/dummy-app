@@ -5,6 +5,9 @@ import {
   provideBrowserGlobalErrorListeners,
 } from '@angular/core';
 import { provideRouter } from '@angular/router';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
+
+import { errorInterceptor } from './others/interceptors/error-interceptor';
 
 import { routes } from './app.routes';
 
@@ -18,6 +21,7 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideRouter(routes),
+    provideHttpClient(withInterceptors([errorInterceptor])),
     // Execute functions at the very beggining of the app
     provideAppInitializer(() => {
       // const initializerFn = initConfig(inject(AppInitService));
