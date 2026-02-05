@@ -40,7 +40,8 @@ export class AuthService {
       // CASE 1 - Valid credentials
       tap((data) => {
         console.log(`CASE 1`);
-        const expirationTimestamp = Date.now() + 300000;
+        // 30 min = 1800000 ms
+        const expirationTimestamp = Date.now() + 5000; // only 5 seconds to test interceptor
         const userData: UserDataModel = { ...data, expiresAt: expirationTimestamp };
         this.sessionData$.next({
           success: true,
@@ -103,7 +104,7 @@ export class AuthService {
             console.log('Load User State Error:', error);
           },
         });
-        // CASE 2 - No refresh token
+        // CASE 3 - No refresh token
       } else {
         console.log('There is not refresh token.');
       }
@@ -111,6 +112,8 @@ export class AuthService {
   }
 
   refreshSession(userData: UserDataModel) {
+    console.log('refreshSession');
+
     // **NOT CHECKING EXPIRATION TIME OF REFRESH TOKEN**
     const body = {
       refreshToken: userData.refreshToken, // Optional, if not provided, the server will use the cookie
@@ -119,8 +122,8 @@ export class AuthService {
     return this.http.post<RefreshResponseModel>(this.refreshUrl, body).pipe(
       // CASE 1 - Refreshing went right
       tap((res) => {
-        // Only five minutes of expiration time for develop
-        const expirationTimestamp = Date.now() + 300000;
+        // 30 min = 1800000 ms
+        const expirationTimestamp = Date.now() + 5000; // only 5 seconds to test interceptor
         const freshData: UserDataModel = {
           ...userData,
           accessToken: res.accessToken,
