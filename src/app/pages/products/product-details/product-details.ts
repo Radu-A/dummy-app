@@ -1,15 +1,18 @@
-import { Component, inject, signal } from '@angular/core';
-import { RouterLink, ActivatedRoute } from '@angular/router';
+import { Component, effect, inject, signal } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { Observable, catchError, map, startWith, of, tap } from 'rxjs';
 import { AsyncPipe, Location } from '@angular/common';
 
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
+import { MatDialog } from '@angular/material/dialog';
 
 import { ProductStateModel } from '../../../models/product.model';
 import { ProductService } from '../../../services/product-service';
+import { LoadingService } from '../../../services/loading-service';
 
 import { DetailsCard } from '../../../components/details-card/details-card';
+import { LoadingModal } from '../../../components/loading-modal/loading-modal';
 
 @Component({
   selector: 'app-product-details',
@@ -19,10 +22,12 @@ import { DetailsCard } from '../../../components/details-card/details-card';
 })
 export class ProductDetails {
   private service = inject(ProductService);
+  private loadingService = inject(LoadingService);
   private route = inject(ActivatedRoute);
   private location = inject(Location);
-  // Improvement:
-  // paramsMap and pipe to direct connection with productState$
+  // Dialog
+  readonly dialog = inject(MatDialog);
+
   private readonly id = signal<number>(Number(this.route.snapshot.params['id']));
 
   productState$: Observable<ProductStateModel> = this.service.getProductById(this.id()).pipe(
@@ -46,7 +51,17 @@ export class ProductDetails {
     ),
   );
 
-  constructor() {}
+  constructor() {
+    // Listen the state of isLoading signal at loadingService
+    effect(() => {
+      const isLoading = this.loadingService.isLoading();
+      if (isLoading) {
+        this.dialog.open(LoadingModal);
+      } else {
+        this.dialog.closeAll();
+      }
+    });
+  }
 
   goBack() {
     this.location.back();

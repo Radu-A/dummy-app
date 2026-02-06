@@ -23,7 +23,7 @@ export const tokenInterceptor: HttpInterceptorFn = (req, next) => {
     // newReq.headers.set('Content-Type', 'application/json');
 
     // Check that token change every 5 seconds
-    console.log(`Token interceptor - injecting token in headers requests: ${accessToken$.value}`);
+    // console.log(`Token interceptor - injecting token in headers requests: ${accessToken$.value}`);
 
     return next(newReq);
   }

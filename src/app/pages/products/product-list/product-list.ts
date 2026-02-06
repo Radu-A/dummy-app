@@ -1,5 +1,6 @@
+import { LoadingService } from './../../../services/loading-service';
 // Angular
-import { Component, inject, model } from '@angular/core';
+import { Component, effect, inject, model } from '@angular/core';
 import { AsyncPipe } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 // Third part
@@ -9,6 +10,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatDialog } from '@angular/material/dialog';
 // Own dependencies
 import { ResponseModel } from '../../../models/product.model';
 import { PageModel } from '../../../models/page.model';
@@ -19,6 +21,7 @@ import { SearchInput } from '../../../components/search-input/search-input';
 import { ProductGrid } from '../../../components/product-grid/product-grid';
 import { ProductListing } from '../../../components/product-listing/product-listing';
 import { ToggleButton } from '../../../components/toggle-button/toggle-button';
+import { LoadingModal } from '../../../components/loading-modal/loading-modal';
 
 @Component({
   selector: 'app-product-list',
@@ -40,6 +43,8 @@ import { ToggleButton } from '../../../components/toggle-button/toggle-button';
 export class ProductList {
   private readonly productService = inject(ProductService);
   private readonly storageService = inject(StorageService);
+  loadingService = inject(LoadingService);
+  private dialog = inject(MatDialog);
 
   // Two-way binding with "isTrue" in toggle-button
   isGrid = model(true);
@@ -111,6 +116,17 @@ export class ProductList {
       this.inputValue$.next(inputValue);
       this.isGrid.set(isGrid);
     }
+  }
+
+  constructor() {
+    effect(() => {
+      const isLoading = this.loadingService.isLoading();
+      if (isLoading) {
+        this.dialog.open(LoadingModal);
+      } else {
+        this.dialog.closeAll();
+      }
+    });
   }
 
   ngOnInit() {

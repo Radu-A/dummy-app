@@ -15,6 +15,8 @@ export class ProductService {
   httpClient = inject(HttpClient);
 
   getProducts(total: number, index: number, term: string | null): Observable<ResponseModel> {
+    console.log('getProducts');
+
     const skip = total * index;
     // Return an Observable with ResponseModel value:
     // {products: ProductModel[];total: number;}

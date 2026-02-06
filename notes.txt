@@ -1,13 +1,12 @@
-// ===============
+// =============
 // TICKETS
-// ===============
+// =============
 storage-service:
 - asíncronía
 - item-any
 
 rest-service:
 - todas las llamadas a la API
-
 
 interceptores:
 - capturar errores ej: 404 -> alerta

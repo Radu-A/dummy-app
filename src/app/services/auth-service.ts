@@ -112,8 +112,6 @@ export class AuthService {
   }
 
   refreshSession(userData: UserDataModel) {
-    console.log('refreshSession');
-
     // **NOT CHECKING EXPIRATION TIME OF REFRESH TOKEN**
     const body = {
       refreshToken: userData.refreshToken, // Optional, if not provided, the server will use the cookie
