@@ -16,11 +16,11 @@
       @if (state.data; as product) {
         <div class="details-container">
           <div class="grid-container">
-            <mat-card class="image-card" appearance="outlined">
+            <mat-card class="image-card card" appearance="outlined">
               <img mat-card-image [src]="product.images[0]" [alt]="product.title" />
             </mat-card>
 
-            <app-details-card [product]="product"></app-details-card>
+            <app-details-card class="details-card card" [product]="product"></app-details-card>
           </div>
         </div>
       }

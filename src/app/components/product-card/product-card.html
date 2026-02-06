@@ -1,6 +1,8 @@
 @if (product()) {
   <mat-card class="product-card" appearance="outlined">
-    <img mat-card-image [src]="product().thumbnail" [alt]="product().title" />
+    <div class="image-container">
+      <img mat-card-image [src]="product().thumbnail" [alt]="product().title" />
+    </div>
 
     <mat-card-header>
       <mat-card-subtitle>{{ product().category }}</mat-card-subtitle>

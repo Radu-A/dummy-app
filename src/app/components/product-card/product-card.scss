@@ -2,10 +2,17 @@
   padding: 0.5rem;
   .product-title {
     height: 56px;
+    overflow: hidden;
+  }
+  .image-container {
+    margin: 0 auto;
+    // Avoid layout restructuration
+    width: 100%;
+    aspect-ratio: 1/1;
   }
   img {
-    margin: 0 auto;
-    max-width: 400px;
+    height: 100%;
+    width: 100%;
   }
   .star-icon {
     color: rgb(241, 115, 31);
