@@ -8,7 +8,7 @@ import {
 
 @Component({
   selector: 'app-loading-modal',
-  imports: [MatDialogTitle, MatDialogContent, MatDialogActions, MatDialogClose],
+  imports: [MatDialogTitle, MatDialogContent],
   templateUrl: './loading-modal.html',
   styleUrl: './loading-modal.scss',
 })
