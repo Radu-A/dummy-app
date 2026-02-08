@@ -47,7 +47,7 @@ export class AuthService {
           success: true,
           data: userData,
         });
-        this.storageService.setItem('dummySession', JSON.stringify(this.sessionData$.value.data));
+        this.storageService.setItem('dummySession', this.sessionData$.value.data);
       }),
       // CASE 2 - Error
       // catchError((err) => {
@@ -73,15 +73,14 @@ export class AuthService {
   }
 
   loadUserState() {
-    const localStorageContent = this.storageService.getItem('dummySession');
+    const dummySession: UserDataModel = this.storageService.getItem('dummySession');
 
     // CASE 1 - Nothing in local storage
     // no access token + no refresh token
-    if (!localStorageContent)
+    if (!dummySession)
       return this.sessionData$.next({
         success: false,
       });
-    const dummySession: UserDataModel = JSON.parse(localStorageContent);
 
     // CASE 2 - Session active (happy path!)
     if (dummySession.expiresAt > Date.now()) {
@@ -89,7 +88,6 @@ export class AuthService {
         success: true,
         data: dummySession,
       });
-      this.storageService.setItem('dummySession', JSON.stringify(this.sessionData$.value.data));
       // CASE 3 - Lapsed access token
     } else {
       // **NOT CHECKING EXPIRATION TIME OF REFRESH TOKEN**
@@ -132,7 +130,7 @@ export class AuthService {
           success: true,
           data: freshData,
         });
-        this.storageService.setItem('dummySession', JSON.stringify(this.sessionData$.value.data));
+        this.storageService.setItem('dummySession', this.sessionData$.value.data);
       }),
       map((res) => {
         return true;

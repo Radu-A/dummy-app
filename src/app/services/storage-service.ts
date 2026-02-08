@@ -4,18 +4,26 @@ import { Injectable } from '@angular/core';
   providedIn: 'root',
 })
 export class StorageService {
-  setItem(itemName: string, item: string) {
+  setItem(itemName: string, item: any) {
     try {
-      localStorage.setItem(itemName, item);
+      localStorage.setItem(itemName, JSON.stringify(item));
     } catch (error) {
       throw `Error saving file in local storage: ${error}`;
     }
   }
+
   getItem(itemName: string) {
     try {
-      return localStorage.getItem(itemName);
+      const data = localStorage.getItem(itemName);
+      if (data) {
+        return JSON.parse(data);
+      } else {
+        console.log(`Nothing in local storage with that name.`);
+        return false;
+      }
     } catch (error) {
-      throw `Error loading file in local storage: ${error}`;
+      console.log(`Error loading file in local storage: ${error}`);
+      return false;
     }
   }
   removeItem(itemName: string) {

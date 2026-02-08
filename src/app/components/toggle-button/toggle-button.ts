@@ -36,6 +36,6 @@ export class ToggleButton {
       inputValue: this.parameters().inputValue,
       isGrid: this.isTrue(),
     };
-    this.storageService.setItem('dummyParams', JSON.stringify(parameters));
+    this.storageService.setItem('dummyParams', parameters);
   }
 }

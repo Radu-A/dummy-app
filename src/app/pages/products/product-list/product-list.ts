@@ -12,7 +12,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
 // Own dependencies
-import { ResponseModel } from '../../../models/product.model';
+import { ResponseModel, ParametersModel } from '../../../models/product.model';
 import { PageModel } from '../../../models/page.model';
 import { ProductService } from '../../../services/product-service';
 import { StorageService } from '../../../services/storage-service';
@@ -89,7 +89,7 @@ export class ProductList {
       inputValue: this.inputValue$.value,
       isGrid: this.isGrid(),
     };
-    this.storageService.setItem('dummyParams', JSON.stringify(parameters));
+    this.storageService.setItem('dummyParams', parameters);
   }
 
   handlePageEvent(pageEvent: PageModel) {
@@ -103,14 +103,16 @@ export class ProductList {
       inputValue: this.inputValue$.value,
       isGrid: this.isGrid(),
     };
-    this.storageService.setItem('dummyParams', JSON.stringify(parameters));
+    this.storageService.setItem('dummyParams', parameters);
   }
 
   // Check on localStorage if there is search parameters
   checkParameters() {
-    const parameters = localStorage.getItem('dummyParams');
+    const parameters: ParametersModel = this.storageService.getItem('dummyParams');
+    console.log(`checkParameters ${parameters}`);
+
     if (parameters) {
-      const { pageSize, pageIndex, inputValue, isGrid } = JSON.parse(parameters);
+      const { pageSize, pageIndex, inputValue, isGrid } = parameters;
       this.pageSize$.next(pageSize);
       this.pageIndex$.next(pageIndex);
       this.inputValue$.next(inputValue);

@@ -43,5 +43,5 @@ export interface ParametersModel {
   pageSize: number;
   pageIndex: number;
   inputValue: string | null;
-  isGrid?: boolean;
+  isGrid: boolean;
 }
