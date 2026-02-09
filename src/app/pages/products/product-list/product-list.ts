@@ -109,8 +109,6 @@ export class ProductList {
   // Check on localStorage if there is search parameters
   checkParameters() {
     const parameters: ParametersModel = this.storageService.getItem('dummyParams');
-    console.log(`checkParameters ${parameters}`);
-
     if (parameters) {
       const { pageSize, pageIndex, inputValue, isGrid } = parameters;
       this.pageSize$.next(pageSize);
