@@ -4,28 +4,53 @@ import { inject } from '@angular/core';
 import { environment } from '../../../environments/environment.development';
 
 import { AuthService } from '../../services/auth-service';
-import { BehaviorSubject } from 'rxjs';
+import { catchError, switchMap, throwError } from 'rxjs';
+
+// Force "Invalid/Expired Token!" response
+const INVALID_TOKEN = 'thisissuperfake!';
 
 export const tokenInterceptor: HttpInterceptorFn = (req, next) => {
   const authService = inject(AuthService);
+  const sessionData$ = authService.sessionData$;
 
-  // To save access token in a reactive way
-  const accessToken$ = new BehaviorSubject<string | undefined>(undefined);
+  // Filter rotes that not require token
+  if (!req.url.startsWith(`${environment.apiUrl}/auth/products/`)) return next(req);
 
-  // Subscribe and save access token in Behaviour Subject
-  authService.getSessionData().subscribe((data) => accessToken$.next(data?.accessToken));
+  // CASE 1 - No available data
+  if (!sessionData$.value.data) return next(req);
 
-  if (req.url.startsWith(`${environment.apiUrl}/auth/products/`)) {
-    const newReq = req.clone({
-      headers: req.headers.append('Authorization', `Bearer ${accessToken$.value}`),
-    });
-    // HttpClient append 'Content-Type' headers for you
-    // newReq.headers.set('Content-Type', 'application/json');
+  // CASE 2 - Expired token
+  if (sessionData$.value.data.expiresAt < Date.now()) {
+    console.log('CASE 2 - Expired token');
 
-    // Check that token change every 5 seconds
-    // console.log(`Token interceptor - injecting token in headers requests: ${accessToken$.value}`);
+    return authService.refreshSession().pipe(
+      switchMap((newSessionData) => {
+        console.log('Refresco completado. Reintentando petición original con nuevo token.');
+        // Not allowed to change a request, clone is required
+        const authorizedReq = req.clone({
+          // Not allowed to change a request, clone is required
+          headers: req.headers.append('Authorization', `Bearer ${newSessionData.accessToken}`),
+        });
 
-    return next(newReq);
+        // Check that token change every 5 seconds
+        // console.log(
+        //   `Token interceptor - injecting token in headers requests: ${sessionData$.value.data?.accessToken}`,
+        // );
+
+        return next(authorizedReq);
+      }),
+      catchError((err) => {
+        console.error('Refresh token failed');
+        return throwError(() => err);
+      }),
+    );
   }
-  return next(req);
+  // CASE 3 - El token es válido, seguimos normal
+  const authorizedReq = req.clone({
+    setHeaders: {
+      Authorization: `Bearer ${sessionData$.value.data.accessToken}`,
+    },
+  });
+
+  return next(authorizedReq);
 };

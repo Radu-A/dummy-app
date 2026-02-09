@@ -77,22 +77,34 @@ export class AuthService {
 
     // CASE 1 - Nothing in local storage
     // no access token + no refresh token
-    if (!dummySession)
+    // *** logout??? ***
+    if (!dummySession) {
+      console.log('CASE 1 - Nothing in local storage');
+
       return this.sessionData$.next({
         success: false,
       });
+    }
 
     // CASE 2 - Session active (happy path!)
     if (dummySession.expiresAt > Date.now()) {
+      console.log('CASE 2 - Session active (happy path!)');
+
       this.sessionData$.next({
         success: true,
         data: dummySession,
       });
       // CASE 3 - Lapsed access token
     } else {
+      console.log('CASE 3 - Lapsed access token');
+
+      this.sessionData$.next({
+        success: true,
+        data: dummySession,
+      });
       // **NOT CHECKING EXPIRATION TIME OF REFRESH TOKEN**
       if (dummySession.refreshToken) {
-        this.refreshSession(dummySession).subscribe({
+        this.refreshSession().subscribe({
           // CASE 1 - Refreshing went right
           next: () => {
             console.log('Refresh successfully.');
@@ -104,20 +116,30 @@ export class AuthService {
         });
         // CASE 3 - No refresh token
       } else {
-        console.log('There is not refresh token.');
+        // *** logout???***
+        console.log('No refresh token available');
       }
     }
   }
 
-  refreshSession(userData: UserDataModel) {
+  refreshSession() {
+    const userData = this.sessionData$.value.data;
+
+    if (!userData?.refreshToken) {
+      console.log('No refresh token available');
+      return throwError(() => Error('No refresh token available'));
+    }
+
     // **NOT CHECKING EXPIRATION TIME OF REFRESH TOKEN**
     const body = {
       refreshToken: userData.refreshToken, // Optional, if not provided, the server will use the cookie
       expiresInMins: 30, // optional (FOR ACCESS TOKEN), defaults to 60
     };
+
     return this.http.post<RefreshResponseModel>(this.refreshUrl, body).pipe(
       // CASE 1 - Refreshing went right
       tap((res) => {
+        console.log('CASE 1 - Refreshing went right (refreshSession)');
         // 30 min = 1800000 ms
         const expirationTimestamp = Date.now() + 5000; // only 5 seconds to test interceptor
         const freshData: UserDataModel = {
@@ -132,11 +154,9 @@ export class AuthService {
         });
         this.storageService.setItem('dummySession', this.sessionData$.value.data);
       }),
-      map((res) => {
-        return true;
-      }),
       // CASE 2 - Refreshing went wrong
       catchError((error) => {
+        // *** logout method ***
         this.storageService.removeItem('dummySession');
         this.sessionData$.next({
           success: false,
