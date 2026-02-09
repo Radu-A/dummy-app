@@ -1,10 +1,10 @@
 import { HttpInterceptorFn } from '@angular/common/http';
 import { inject } from '@angular/core';
+import { catchError, switchMap, throwError } from 'rxjs';
 
 import { environment } from '../../../environments/environment.development';
 
 import { AuthService } from '../../services/auth-service';
-import { catchError, switchMap, throwError } from 'rxjs';
 
 // Force "Invalid/Expired Token!" response
 const INVALID_TOKEN = 'thisissuperfake!';
@@ -14,7 +14,12 @@ export const tokenInterceptor: HttpInterceptorFn = (req, next) => {
   const sessionData$ = authService.sessionData$;
 
   // Filter rotes that not require token
-  if (!req.url.startsWith(`${environment.apiUrl}/auth/products/`)) return next(req);
+  if (
+    !req.url.startsWith(`${environment.apiUrl}/auth/`) ||
+    req.url.startsWith(`${environment.apiUrl}/auth/refresh`) ||
+    req.url.startsWith(`${environment.apiUrl}/auth/login`)
+  )
+    return next(req);
 
   // CASE 1 - No available data
   if (!sessionData$.value.data) return next(req);
