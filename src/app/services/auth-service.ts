@@ -63,6 +63,15 @@ export class AuthService {
     );
   }
 
+  logout() {
+    this.storageService.removeItem('dummySession');
+    this.sessionData$.next({
+      success: false,
+      data: undefined,
+    });
+    this.router.navigate(['/login']);
+  }
+
   isAuthenticated(): Observable<boolean | undefined> {
     // Return only true/false to auth-guard
     return this.sessionData$.pipe(map((data) => data.success));
