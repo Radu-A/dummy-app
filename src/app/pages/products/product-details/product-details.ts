@@ -12,7 +12,8 @@ import { ProductService } from '../../../services/product-service';
 import { LoadingService } from '../../../services/loading-service';
 
 import { DetailsCard } from '../../../components/details-card/details-card';
-import { LoadingModal } from '../../../components/loading-modal/loading-modal';
+import { MessageModal } from '../../../components/message-modal/message-modal';
+import { ErrorService } from '../../../services/error-service';
 
 @Component({
   selector: 'app-product-details',
@@ -23,6 +24,7 @@ import { LoadingModal } from '../../../components/loading-modal/loading-modal';
 export class ProductDetails {
   private service = inject(ProductService);
   private loadingService = inject(LoadingService);
+  private errorService = inject(ErrorService);
   private route = inject(ActivatedRoute);
   private location = inject(Location);
   // Dialog

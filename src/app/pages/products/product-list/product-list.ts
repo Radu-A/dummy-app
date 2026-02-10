@@ -44,6 +44,7 @@ export class ProductList {
   private readonly productService = inject(ProductService);
   private readonly storageService = inject(StorageService);
   loadingService = inject(LoadingService);
+  errorService = inject(ErrorService);
   private dialog = inject(MatDialog);
 
   // Two-way binding with "isTrue" in toggle-button

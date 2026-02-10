@@ -1,7 +1,10 @@
 import { HttpEventType, HttpInterceptorFn } from '@angular/common/http';
+import { inject } from '@angular/core';
 import { catchError, tap, throwError } from 'rxjs';
+import { ErrorService } from '../../services/error-service';
 
 export const errorInterceptor: HttpInterceptorFn = (req, next) => {
+  const service = inject(ErrorService);
   return next(req).pipe(
     tap((event) => {
       if (event.type === HttpEventType.Response) {
@@ -10,20 +13,34 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
     }),
     catchError((error) => {
       console.error(error);
-      if (error.status === 0) {
-        alert(
-          `We were unable to connect to the server. Please check your internet connection and try again.`,
-        );
-      } else if (error.status >= 500) {
-        alert(`An unexpected problem occurred with our services. We are working on it.`);
-      } else if (error.status == 401) {
-        alert(`Session expired.`);
-      } else if (error.status == 403) {
-        alert(`You do not have permission to perform this action.`);
-      } else if (error.status == 404) {
-        alert(`We haven't found what you were searching.`);
-      } else {
-        alert(`Unknown error: ${error.message}`);
+
+      switch (true) {
+        case error.status === 0:
+          // Chrome inspector / Network / No throttling
+          service.setError(
+            true,
+            `We were unable to connect to the server. Please check your internet connection and try again`,
+          );
+          break;
+        case error.status >= 500:
+          service.setError(
+            true,
+            `An unexpected problem occurred with our services. We are working on it`,
+          );
+          break;
+        case error.status === 401:
+          service.setError(true, `Session expired`);
+          break;
+        case error.status === 403:
+          service.setError(true, `You do not have permission to perform this action`);
+          break;
+        //
+        case error.status === 404:
+          service.setError(true, `We haven't found what you were searching`);
+          break;
+        default:
+          service.setError(true, `Unknown error: ${error.message}`);
+          break;
       }
 
       return throwError(() => error);
