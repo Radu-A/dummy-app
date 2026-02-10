@@ -165,13 +165,11 @@ export class AuthService {
       }),
       // CASE 2 - Refreshing went wrong
       catchError((error) => {
-        // *** logout method ***
-        this.storageService.removeItem('dummySession');
-        this.sessionData$.next({
-          success: false,
-          error: error,
-        });
+        console.log('CASE 2 - Refreshing went wrong (refreshSession)');
         console.error('Refresh Token Error:', error);
+        // Cunrrently calling to logout from error-interceptor
+        // Improve: implement critic errors
+        //   this.logout();
         return throwError(() => error);
       }),
     );
