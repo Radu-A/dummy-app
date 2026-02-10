@@ -1,4 +1,3 @@
-import { LoadingService } from './../../../services/loading-service';
 // Angular
 import { Component, effect, inject, model } from '@angular/core';
 import { AsyncPipe } from '@angular/common';
@@ -16,12 +15,14 @@ import { ResponseModel, ParametersModel } from '../../../models/product.model';
 import { PageModel } from '../../../models/page.model';
 import { ProductService } from '../../../services/product-service';
 import { StorageService } from '../../../services/storage-service';
+import { LoadingService } from './../../../services/loading-service';
+import { ErrorService } from '../../../services/error-service';
 // Own components
 import { SearchInput } from '../../../components/search-input/search-input';
 import { ProductGrid } from '../../../components/product-grid/product-grid';
 import { ProductListing } from '../../../components/product-listing/product-listing';
 import { ToggleButton } from '../../../components/toggle-button/toggle-button';
-import { LoadingModal } from '../../../components/loading-modal/loading-modal';
+import { MessageModal } from '../../../components/message-modal/message-modal';
 
 @Component({
   selector: 'app-product-list',
@@ -120,10 +121,24 @@ export class ProductList {
   }
 
   constructor() {
+    // "effect" react to signal changes and execute his snippet
     effect(() => {
       const isLoading = this.loadingService.isLoading();
       if (isLoading) {
-        this.dialog.open(LoadingModal);
+        this.dialog.open(MessageModal, {
+          data: { message: 'Loading content...' },
+        });
+      } else {
+        this.dialog.closeAll();
+      }
+    });
+    effect(() => {
+      const isError = this.errorService.isError();
+      const errorMessage = this.errorService.errorMessage();
+      if (isError) {
+        this.dialog.open(MessageModal, {
+          data: { message: errorMessage },
+        });
       } else {
         this.dialog.closeAll();
       }

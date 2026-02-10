@@ -58,7 +58,20 @@ export class ProductDetails {
     effect(() => {
       const isLoading = this.loadingService.isLoading();
       if (isLoading) {
-        this.dialog.open(LoadingModal);
+        this.dialog.open(MessageModal, {
+          data: { message: 'Loading content...' },
+        });
+      } else {
+        this.dialog.closeAll();
+      }
+    });
+    effect(() => {
+      const isError = this.errorService.isError();
+      const errorMessage = this.errorService.errorMessage();
+      if (isError) {
+        this.dialog.open(MessageModal, {
+          data: { message: errorMessage },
+        });
       } else {
         this.dialog.closeAll();
       }
