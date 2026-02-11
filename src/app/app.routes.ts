@@ -44,6 +44,11 @@ export const routes: Routes = [
   },
   {
     path: '**',
+    redirectTo: 'notfound',
+    pathMatch: 'full',
+  },
+  {
+    path: 'notfound',
     component: NotFoundPage,
   },
 ];

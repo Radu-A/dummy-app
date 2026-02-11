@@ -3,10 +3,12 @@ import { inject } from '@angular/core';
 import { catchError, switchMap, tap, throwError } from 'rxjs';
 import { ErrorService } from '../../services/error-service';
 import { AuthService } from '../../services/auth-service';
+import { Router } from '@angular/router';
 
 export const errorInterceptor: HttpInterceptorFn = (req, next) => {
   const errorService = inject(ErrorService);
   const authService = inject(AuthService);
+  const router = inject(Router);
   return next(req).pipe(
     tap((event) => {
       if (event.type === HttpEventType.Response) {
@@ -18,7 +20,7 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
 
       switch (true) {
         case error.status === 0:
-          // Chrome inspector / Network / No throttling
+          // FORCE ERROR: Chrome inspector / Network / No throttling
           errorService.setError(
             true,
             `We were unable to connect to the server. Please check your internet connection and try again`,
@@ -35,7 +37,7 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
           );
           break;
         case error.status === 401:
-          // Use "INVALID_TOKEN" in token-interceptor
+          // FORCE ERROR: Use "INVALID_TOKEN" in token-interceptor
           return authService.refreshSession().pipe(
             switchMap((newSession) => {
               const newReq = req.clone({
@@ -55,14 +57,19 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
           errorService.setError(true, `You do not have permission to perform this action`);
           break;
         case error.status === 404:
-          // Corrupt "productsUrl" in product-service
-          errorService.setError(true, `We haven't found what you were searching`);
+          // If the error is in the URL, app.routes redirect to NotFoundPage, else:
+          // FORCE ERROR: Navigate to http://localhost:4200/products/details/666
+          // Redirect to NotFoundPage, instead of show modal
+          router.navigate(['/notfound'], {
+            queryParams: {
+              type: 'api',
+            },
+          });
           break;
         default:
           errorService.setError(true, `Unknown error: ${error.message}`);
           break;
       }
-
       return throwError(() => error);
     }),
   );
