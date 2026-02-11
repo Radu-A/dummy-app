@@ -9,20 +9,16 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { MatPaginatorModule } from '@angular/material/paginator';
-import { MatDialog } from '@angular/material/dialog';
 // Own dependencies
 import { ResponseModel, ParametersModel } from '../../../models/product.model';
 import { PageModel } from '../../../models/page.model';
 import { ProductService } from '../../../services/product-service';
 import { StorageService } from '../../../services/storage-service';
-import { LoadingService } from './../../../services/loading-service';
-import { ErrorService } from '../../../services/error-service';
 // Own components
 import { SearchInput } from '../../../components/search-input/search-input';
 import { ProductGrid } from '../../../components/product-grid/product-grid';
 import { ProductListing } from '../../../components/product-listing/product-listing';
 import { ToggleButton } from '../../../components/toggle-button/toggle-button';
-import { MessageModal } from '../../../components/message-modal/message-modal';
 
 @Component({
   selector: 'app-product-list',
@@ -44,9 +40,6 @@ import { MessageModal } from '../../../components/message-modal/message-modal';
 export class ProductList {
   private readonly productService = inject(ProductService);
   private readonly storageService = inject(StorageService);
-  loadingService = inject(LoadingService);
-  errorService = inject(ErrorService);
-  private dialog = inject(MatDialog);
 
   // Two-way binding with "isTrue" in toggle-button
   isGrid = model(true);
@@ -118,31 +111,6 @@ export class ProductList {
       this.inputValue$.next(inputValue);
       this.isGrid.set(isGrid);
     }
-  }
-
-  constructor() {
-    // "effect" react to signal changes and execute his snippet
-    effect(() => {
-      const isLoading = this.loadingService.isLoading();
-      if (isLoading) {
-        this.dialog.open(MessageModal, {
-          data: { message: 'Loading content...' },
-        });
-      } else {
-        this.dialog.closeAll();
-      }
-    });
-    effect(() => {
-      const isError = this.errorService.isError();
-      const errorMessage = this.errorService.errorMessage();
-      if (isError) {
-        this.dialog.open(MessageModal, {
-          data: { message: errorMessage },
-        });
-      } else {
-        this.dialog.closeAll();
-      }
-    });
   }
 
   ngOnInit() {
