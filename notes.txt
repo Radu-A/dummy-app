@@ -3,7 +3,7 @@
 // =============
 storage-service:
 - asíncronía
-- item-any
+X item-any
 
 rest-service:
 - todas las llamadas a la API

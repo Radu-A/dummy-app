@@ -25,6 +25,7 @@ export const tokenInterceptor: HttpInterceptorFn = (req, next) => {
   if (!sessionData$.value.data) return next(req);
 
   // CASE 2 - Expired token
+  // (expired token CASE 1 - expired data)
   if (sessionData$.value.data.expiresAt < Date.now()) {
     console.log('CASE 2 - Expired token');
 
