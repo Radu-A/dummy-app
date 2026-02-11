@@ -1,8 +1,8 @@
 import { Routes } from '@angular/router';
-import { Login } from './pages/login/login';
 
 import { authGuard } from './others/guards/auth-guard';
-
+import { NotFoundPage } from './pages/not-found-page/not-found-page';
+import { Login } from './pages/login/login';
 import { Register } from './pages/register/register';
 import { MainLayout } from './layout/main-layout/main-layout';
 import { ProductList } from './pages/products/product-list/product-list';
@@ -41,5 +41,9 @@ export const routes: Routes = [
         ],
       },
     ],
+  },
+  {
+    path: '**',
+    component: NotFoundPage,
   },
 ];
