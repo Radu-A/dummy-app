@@ -1,12 +1,15 @@
 // =============
 // TICKETS
 // =============
+
+- Refactorizar Login/Auth
+    rest-service: todas las llamadas a la API
+- Lazy Loading
+- Mapper
+
 storage-service:
 - asíncronía
 X item-any
-
-rest-service:
-- todas las llamadas a la API
 
 interceptores:
 X capturar errores ej: 404 -> alerta

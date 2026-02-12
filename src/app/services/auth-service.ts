@@ -3,24 +3,21 @@ import { BehaviorSubject, catchError, map, Observable, tap, throwError } from 'r
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 
-import { environment } from '../../environments/environment.development';
-
 import { UserDataModel } from '../models/user.model';
-import { SessionModel, RefreshResponseModel } from '../models/auth.model';
+import { SessionModel } from '../models/auth.model';
 
 import { StorageService } from './storage-service';
+import { RestService } from './rest-service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  loginUrl = `${environment.apiUrl}/auth/login`;
-  refreshUrl = `${environment.apiUrl}/auth/refresh`;
-
   http = inject(HttpClient);
   router = inject(Router);
 
   storageService = inject(StorageService);
+  restService = inject(RestService);
 
   // Initialize as undefined cause we need one state more:
   // auth-guard call "isAuthenticated()" before
@@ -36,7 +33,7 @@ export class AuthService {
       password: password,
       expiresInMins: 30, // optional, defaults to 60
     };
-    return this.http.post<UserDataModel>(this.loginUrl, body).pipe(
+    return this.restService.login(body).pipe(
       // CASE 1 - Valid credentials
       tap((data) => {
         console.log(`CASE 1`);
@@ -145,7 +142,7 @@ export class AuthService {
       expiresInMins: 30, // optional (FOR ACCESS TOKEN), defaults to 60
     };
 
-    return this.http.post<RefreshResponseModel>(this.refreshUrl, body).pipe(
+    return this.restService.refreshToken(body).pipe(
       // CASE 1 - Refreshing went right
       tap((res) => {
         console.log('CASE 1 - Refreshing went right (refreshSession)');
