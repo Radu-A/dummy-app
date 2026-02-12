@@ -1,12 +1,10 @@
 import { Routes } from '@angular/router';
 
 import { authGuard } from './others/guards/auth-guard';
+
 import { NotFoundPage } from './pages/not-found-page/not-found-page';
 import { Login } from './pages/login/login';
 import { Register } from './pages/register/register';
-import { MainLayout } from './layout/main-layout/main-layout';
-import { ProductList } from './pages/products/product-list/product-list';
-import { ProductDetails } from './pages/products/product-details/product-details';
 
 export const routes: Routes = [
   {
@@ -24,31 +22,23 @@ export const routes: Routes = [
   },
   {
     path: '',
-    component: MainLayout,
+    loadComponent: () => import('./layout/main-layout/main-layout').then((mod) => mod.MainLayout),
     children: [
       {
         path: 'products',
         canActivate: [authGuard],
-        children: [
-          {
-            path: '',
-            component: ProductList,
-          },
-          {
-            path: 'details/:id',
-            component: ProductDetails,
-          },
-        ],
+        loadChildren: () =>
+          import('./pages/products/products.routes').then((mod) => mod.productsRoutes),
       },
     ],
+  },
+  {
+    path: 'notfound',
+    component: NotFoundPage,
   },
   {
     path: '**',
     redirectTo: 'notfound',
     pathMatch: 'full',
-  },
-  {
-    path: 'notfound',
-    component: NotFoundPage,
   },
 ];
