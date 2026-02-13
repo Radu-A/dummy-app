@@ -2,13 +2,16 @@
 // TICKETS
 // =============
 
-- Refactorizar Login/Auth
-    rest-service: todas las llamadas a la API
-- Lazy Loading
+X impieza de console logs
+X manejo de erorres en storage-service
 - Mapper
 
+X Refactorizar Login/Auth
+    rest-service: todas las llamadas a la API
+X Lazy Loading
+
 storage-service:
-- asíncronía
+- asíncronía ??
 X item-any
 
 interceptores:

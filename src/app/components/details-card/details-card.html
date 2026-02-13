@@ -34,8 +34,15 @@
       <span>Shipping Information</span>
       <span>{{ product().shippingInformation }}</span>
     </div>
-    <button class="buy-button" matButton="outlined" type="submit">Add to shopping cart</button>
-    <button class="buy-button" matButton="filled" type="submit">Buy now</button>
+    <button
+      class="buy-button"
+      matButton="outlined"
+      type="button"
+      (click)="cartService.addProduct(product())"
+    >
+      Add to shopping cart
+    </button>
+    <button class="buy-button" matButton="filled" type="button">Buy now</button>
   </mat-card-content>
 
   <!-- <span class="example-spacer"></span> -->
