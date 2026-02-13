@@ -1,59 +1,96 @@
-# DummyApp
+# Dummy App
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.0.5.
+**Angular E-Commerce Demo**
 
-## Development server
+This project is a functional e-commerce simulation that showcases my proficiency in building Single Page Applications (SPAs). It serves as a technical demonstration of scalable Front-End architecture, featuring authentication flows, reactive state management, and reusable UI components.
 
-To start a local development server, run:
+1. [About the Project](#about-the-project)
+2. [Tech Stack](#tech-stack)
+3. [Gallery & Demo](#galery-&-demo)
+4. [Challenges & Learnings](#challenges-&-learnings)
+5. [Acknowledgments](#acknowledgments)
+6. [Author](#author)
 
-```bash
-ng serve
-```
+# About the Project
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+**Dummy App** was born as an exercise to consolidate advanced Angular and RxJS concepts. The application allows users to browse products, filter categories, manage a shopping cart, and handle user authentication securely.
 
-## Code scaffolding
+The main goal was not just to prioritize code maintainability, error handling, and visual consistency, ensuring that the application behaves like a production-ready product.
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+# Tech Stack
 
-```bash
-ng generate component component-name
-```
+The core of the application is Angular, supported by a strictly typed ecosystem:
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+- Frontend Framework: Angular (Latest features, Standalone Components).
 
-```bash
-ng generate --help
-```
+- Styling: SCSS (SASS).
 
-## Building
+- State Management: RxJS (BehaviorSubjects for Cart and Auth state).
 
-To build the project run:
+- Authentication: JWT (JSON Web Tokens), Route Guards, and HTTP Interceptors.
 
-```bash
-ng build
-```
+- UX/UI: Custom skeleton loaders, modal components, and responsive grid layouts.
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+- Routing: Angular Router with lazy loading strategies.
 
-## Running unit tests
+# Gallery & Demo
 
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+- Live Demo: https://dummy-app-jade.vercel.app/
 
-```bash
-ng test
-```
+## Product List
 
-## Running end-to-end tests
+![App Screenshot](./public/screenshots/screenshot-product-list.png)
 
-For end-to-end (e2e) testing, run:
+## Product Details
 
-```bash
-ng e2e
-```
+![App Screenshot](./public/screenshots/screenshot-details.png)
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+## Login
 
-## Additional Resources
+![App Screenshot](./public/screenshots/screenshot-login.png)
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+# Challenges & Learnings
+
+Durante el desarrollo de este proyecto, me enfrenté a desafíos técnicos que me permitieron profundizar en arquitecturas modernas:
+
+1. 🔐 Robust Authentication Flow
+
+Managing user sessions securely is critical.
+
+Challenge: Persisting the login state across reloads and handling token expiration gracefully.
+
+Solution: I implemented a specialized AuthService combined with HTTP Interceptors. The TokenInterceptor attaches the JWT to requests automatically, while the ErrorInterceptor catches 401 errors to redirect the user, ensuring a seamless security layer.
+
+2. 🛒 Reactive State Management (RxJS)
+
+Sharing data like the "Cart Count" between the header and the product list can be messy.
+
+Learning: I moved away from "Prop Drilling" and embraced RxJS.
+
+Result: By using BehaviorSubjects in the CartService, the application reacts instantly to changes. Adding an item updates the header counter immediately, decoupling the components and making the architecture much cleaner.
+
+3. 📱 Advanced Component Reusability
+
+I didn't want to rewrite code for similar views.
+
+Implementation: I designed "Dumb Components" like product-card and toggle-button that rely solely on inputs and outputs. This separation of concerns allowed me to reuse the same card logic for the Grid View, List View, and Cart summary without duplicating logic.
+
+4. 🛠️ From Coding to Engineering
+
+Perhaps the most valuable lesson was structuring the project for scale. Organizing the folder structure by features (Pages vs. Components vs. Services), setting up Environment variables for development/production, and strictly typing models with TypeScript taught me the discipline required for enterprise-level software.
+
+# Acknowledgments
+
+This project wouldn't have been possible without the guidance of my mentors and peers from **Insinno**, **Jose Gonzalez** and **Andrés Torrejón**.
+
+A special thanks to **José Joaquín (Pepe)** for check code and give me advices about the functionality.
+
+# Author
+
+**Víctor Outeiro** - Full-stack Web Developer
+
+- Portfolio Web: https://victor-outeiro.vercel.app/
+
+- LinkedIn: https://www.linkedin.com/in/victor-outeiro/
+
+- GitHub: https://github.com/Radu-A
