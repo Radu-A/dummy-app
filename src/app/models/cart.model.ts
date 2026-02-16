@@ -1,4 +1,4 @@
-export interface CartProduct {
+export interface CartProductModel {
   id: number;
   title: string;
   price: number;
@@ -10,7 +10,7 @@ export interface CartProduct {
 export interface CartModel {
   id: number;
   userId: number;
-  products: CartProduct[];
+  products: CartProductModel[];
   totalProducts: number;
   totalQuantity: number;
   total: number;

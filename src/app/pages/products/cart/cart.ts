@@ -1,17 +1,19 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, Signal, WritableSignal } from '@angular/core';
+
+import { CartModel } from '../../../models/cart.model';
 
 import { CartService } from '../../../services/cart-service';
 
+import { CartRow } from '../../../components/cart-row/cart-row';
+
 @Component({
   selector: 'app-cart',
-  imports: [],
+  imports: [CartRow],
   templateUrl: './cart.html',
   styleUrl: './cart.scss',
 })
 export class Cart {
-  FAKE_IMG = 'https://cdn.dummyjson.com/product-images/groceries/lemon/thumbnail.webp';
-
   cartService = inject(CartService);
 
-  cart = this.cartService.cart;
+  cart: WritableSignal<CartModel | null> = this.cartService.cart;
 }

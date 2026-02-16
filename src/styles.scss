@@ -72,6 +72,13 @@ img {
   height: auto;
 }
 
+button {
+  color: inherit;
+  background-color: inherit;
+  border: none;
+  font: inherit;
+}
+
 .user-menu {
   --mat-menu-container-color: var(--mat-sys-primary-container);
   width: 250px;

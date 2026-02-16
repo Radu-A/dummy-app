@@ -1,6 +1,6 @@
 import { inject, Injectable, signal } from '@angular/core';
 
-import { CartProduct, CartModel } from '../models/cart.model';
+import { CartProductModel, CartModel } from '../models/cart.model';
 import { ProductModel } from '../models/product.model';
 
 import { StorageService } from './storage-service';
@@ -17,14 +17,23 @@ export class CartService {
 
   sessionData$ = this.authService.sessionData$;
 
+  getCart() {
+    const dummyCart = this.storageService.getItem('dummyCart');
+    if (dummyCart) {
+      this.cart.set(dummyCart);
+    }
+  }
+
   addProduct(product: ProductModel) {
-    const addedProduct: CartProduct = {
+    const addedProduct: CartProductModel = {
       id: product.id,
       title: product.title,
       price: product.price,
       quantity: 1,
-      total: 1,
       thumbnail: product.thumbnail,
+      get total() {
+        return this.price * this.quantity;
+      },
     };
     const currentCart = this.cart();
     // CASE 0 - There is no session
@@ -38,11 +47,12 @@ export class CartService {
         products: [addedProduct],
         totalProducts: 1,
         totalQuantity: 1,
+        // *** Fix
         total: product.price,
       });
     } else {
       // Search if product already exist in the cart
-      const cartProduct: CartProduct | undefined = currentCart.products.find(
+      const cartProduct: CartProductModel | undefined = currentCart.products.find(
         (cartProduct) => cartProduct.id === product.id,
       );
       // CASE 2 - There isn't this product in the cart
@@ -72,7 +82,7 @@ export class CartService {
     this.storageService.setItem('dummyCart', this.cart());
   }
 
-  removeProduct(product: CartProduct) {
+  removeProduct(product: CartProductModel) {
     const currentCart = this.cart();
     if (!currentCart) return;
     // Check if product is in products array

@@ -1,8 +1,8 @@
 <div class="cart-header"></div>
 <section class="cart-grid">
-  <!-- @if (this.cart().products) {
+  @if (this.cart()?.products) {
     @for (product of this.cart()!.products; track $index) {
-
+      <app-cart-row [product]="product"></app-cart-row>
     }
-  } -->
+  }
 </section>

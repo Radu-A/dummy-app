@@ -1,0 +1,26 @@
+<article class="cart-card">
+  <div class="card-image">
+    <img [src]="product().thumbnail" alt="" />
+  </div>
+  <div class="card-details">
+    <div class="card-title">
+      <h2>{{ product().title }}</h2>
+    </div>
+    <div class="card-item card-price">
+      <span>€ {{ product().price }}</span>
+    </div>
+    <div class="card-item card-quantity">
+      <div class="buttons-container">
+        <button class="minus">-</button>
+        <button class="quantity-span">{{ product().quantity }}</button>
+        <button class="plus">+</button>
+      </div>
+    </div>
+    <div class="card-item card-total">
+      <span class="total">€ {{ product().total }}</span>
+    </div>
+    <div>
+      <mat-icon>delete</mat-icon>
+    </div>
+  </div>
+</article>
