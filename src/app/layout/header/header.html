@@ -7,6 +7,7 @@
     </nav>
     <span class="example-spacer"></span>
     <nav class="nav-icons">
+      <mat-icon class="material-symbols-outlined">shopping_cart</mat-icon>
       <!-- CASE 1 - There is no session data -->
       @if (userData$ | async; as userData) {
         <button class="user-button" [matMenuTriggerFor]="menu" aria-label="user icon">
@@ -14,7 +15,7 @@
           @if (userData.image) {
             <img class="avatar-image" [src]="userData.image" alt="avatar image" />
           } @else {
-            <mat-icon class="nav-icon">person</mat-icon>
+            <mat-icon class="material-symbols-outlined nav-icon">person</mat-icon>
           }
         </button>
         <mat-menu #menu="matMenu" class="user-menu">
@@ -27,7 +28,7 @@
           </div>
 
           <button class="logout-button" mat-menu-item (click)="logout()">
-            <mat-icon class="logout-icon">logout</mat-icon>
+            <mat-icon class="material-symbols-outlined logout-icon">logout</mat-icon>
             Sign out
           </button>
         </mat-menu>
@@ -38,7 +39,7 @@
         </button>
         <mat-menu #menu="matMenu" class="user-menu">
           <button class="logout-button" mat-menu-item [routerLink]="['/login']">
-            <mat-icon class="logout-icon">login</mat-icon>
+            <mat-icon class="material-symbols-outlined logout-icon">login</mat-icon>
             Log in
           </button>
         </mat-menu>

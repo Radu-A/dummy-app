@@ -28,6 +28,8 @@ header {
 }
 
 .nav-icons {
+  display: flex;
+  align-items: center;
   .user-button {
     display: flex;
     align-items: center;
