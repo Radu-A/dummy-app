@@ -1,4 +1,5 @@
 import { Component, inject, input } from '@angular/core';
+import { Router } from '@angular/router';
 
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
@@ -14,7 +15,13 @@ import { CartService } from '../../services/cart-service';
   styleUrl: './details-card.scss',
 })
 export class DetailsCard {
+  router = inject(Router);
   cartService = inject(CartService);
 
   product = input.required<ProductModel>();
+
+  addAndNavigate(product: ProductModel) {
+    this.cartService.addProduct(product);
+    this.router.navigate(['/products/cart']);
+  }
 }

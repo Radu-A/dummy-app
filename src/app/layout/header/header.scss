@@ -30,6 +30,9 @@ header {
 .nav-icons {
   display: flex;
   align-items: center;
+  .nav-icon {
+    color: var(--mat-sys-on-surface);
+  }
   .user-button {
     display: flex;
     align-items: center;
@@ -40,11 +43,11 @@ header {
       font-size: 1.2rem;
       // color: var(--mat-sys-primary);
     }
-    .nav-icon {
-      color: var(--mat-sys-primary);
-    }
     .avatar-image {
       width: 3rem;
+    }
+    .nav-icon {
+      color: blue;
     }
   }
 

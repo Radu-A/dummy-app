@@ -42,7 +42,9 @@
     >
       Add to shopping cart
     </button>
-    <button class="buy-button" matButton="filled" type="button">Buy now</button>
+    <button class="buy-button" matButton="filled" type="button" (click)="addAndNavigate(product())">
+      Buy now
+    </button>
   </mat-card-content>
 
   <!-- <span class="example-spacer"></span> -->
