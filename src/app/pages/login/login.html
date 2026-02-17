@@ -9,7 +9,7 @@
         <mat-form-field class="auth-input" appearance="outline">
           <mat-label>Username</mat-label>
           <input matInput formControlName="username" (blur)="updateUsernameMessage()" />
-          <mat-icon matSuffix>person</mat-icon>
+          <mat-icon matSuffix class="material-symbols-outlined">person</mat-icon>
           <!-- Material docs: -->
           @if (username.invalid) {
             <mat-error>{{ usernameMessage() }}</mat-error>
@@ -19,7 +19,7 @@
         <mat-form-field class="auth-input" appearance="outline">
           <mat-label>Password</mat-label>
           <input matInput formControlName="password" (blur)="updatePasswordMessage()" />
-          <mat-icon matSuffix>search</mat-icon>
+          <mat-icon matSuffix class="material-symbols-outlined">search</mat-icon>
           <!-- Material docs: -->
           @if (password.invalid) {
             <mat-error>{{ passwordMessage() }}</mat-error>
