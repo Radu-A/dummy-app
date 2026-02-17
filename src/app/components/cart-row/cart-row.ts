@@ -15,5 +15,39 @@ import { CartService } from '../../services/cart-service';
   styleUrl: './cart-row.scss',
 })
 export class CartRow {
+  cartService = inject(CartService);
   product: InputSignal<CartProductModel> = input.required();
+
+  addProduct() {
+    this.cartService.addProduct({
+      id: this.product().id,
+      title: this.product().title,
+      price: this.product().price,
+      quantity: 1,
+      thumbnail: this.product().thumbnail,
+      total: this.product().price,
+    });
+  }
+
+  subtractProduct() {
+    this.cartService.subtractProduct({
+      id: this.product().id,
+      title: this.product().title,
+      price: this.product().price,
+      quantity: this.product().quantity,
+      thumbnail: this.product().thumbnail,
+      total: this.product().price,
+    });
+  }
+
+  removeProduct() {
+    this.cartService.removeProduct({
+      id: this.product().id,
+      title: this.product().title,
+      price: this.product().price,
+      quantity: this.product().quantity,
+      thumbnail: this.product().thumbnail,
+      total: this.product().price,
+    });
+  }
 }
