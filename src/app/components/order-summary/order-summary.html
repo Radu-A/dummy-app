@@ -1,0 +1,23 @@
+<div class="sumary-container">
+  <div class="header">
+    <h3>ORDER SUMMARY</h3>
+  </div>
+  <div class="separator"></div>
+  <div class="summary-item total">
+    <h2>Total</h2>
+    <h2>€ {{ cart().total }}</h2>
+  </div>
+  <div class="summary-item subtotal">
+    <span>Subtotal</span>
+    <span>€ {{ cart().total }}</span>
+  </div>
+  <div class="summary-item shipping">
+    <span>Shipping</span>
+    <span>-</span>
+  </div>
+  <div class="summary-item discount">
+    <span>Product Discount</span>
+    <span>-</span>
+  </div>
+  <button matButton="filled">Pay</button>
+</div>

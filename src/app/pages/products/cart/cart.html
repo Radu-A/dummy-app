@@ -1,8 +1,15 @@
 <div class="cart-header"></div>
-<section class="cart-grid">
-  @if (this.cart()?.products) {
-    @for (product of this.cart()!.products; track $index) {
-      <app-cart-row [product]="product"></app-cart-row>
-    }
-  }
-</section>
+@if (cart()?.products && this.cart()) {
+  <div class="cart-container">
+    <section class="cart-grid">
+      @for (product of this.cart()!.products; track $index) {
+        <app-cart-row [product]="product"></app-cart-row>
+      }
+    </section>
+    <section class="summary-section">
+      <h1>{{ screenSize() }}</h1>
+      <app-order-summary [cart]="cart()!"></app-order-summary>
+      <app-order-info></app-order-info>
+    </section>
+  </div>
+}
