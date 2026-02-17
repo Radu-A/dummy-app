@@ -38,7 +38,7 @@ export class AuthService {
       tap((data) => {
         console.log(`CASE 1`);
         // 30 min = 1800000 ms
-        const expirationTimestamp = Date.now() + 5000; // only 5 seconds to test interceptor
+        const expirationTimestamp = Date.now() + 1800000; // only 5 seconds to test interceptor
         const userData: UserDataModel = { ...data, expiresAt: expirationTimestamp };
         this.sessionData$.next({
           success: true,
@@ -147,7 +147,7 @@ export class AuthService {
       tap((res) => {
         console.log('CASE 1 - Refreshing went right (refreshSession)');
         // 30 min = 1800000 ms
-        const expirationTimestamp = Date.now() + 5000; // only 5 seconds to test interceptor
+        const expirationTimestamp = Date.now() + 1800000; // only 5 seconds to test interceptor
         const freshData: UserDataModel = {
           ...userData,
           accessToken: res.accessToken,
