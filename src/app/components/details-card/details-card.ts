@@ -20,8 +20,19 @@ export class DetailsCard {
 
   product = input.required<ProductModel>();
 
-  addAndNavigate(product: ProductModel) {
-    this.cartService.addProduct(product);
+  addProduct() {
+    this.cartService.addProduct({
+      id: this.product().id,
+      title: this.product().title,
+      price: this.product().price,
+      quantity: 1,
+      thumbnail: this.product().thumbnail,
+      total: this.product().price,
+    });
+  }
+
+  addAndNavigate() {
+    this.addProduct();
     this.router.navigate(['/products/cart']);
   }
 }
