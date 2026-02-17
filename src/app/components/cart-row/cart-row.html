@@ -11,16 +11,18 @@
     </div>
     <div class="card-item card-quantity">
       <div class="buttons-container">
-        <button class="minus">-</button>
+        <button class="minus" (click)="subtractProduct()">-</button>
         <button class="quantity-span">{{ product().quantity }}</button>
-        <button class="plus">+</button>
+        <button class="plus" (click)="addProduct()">+</button>
       </div>
     </div>
     <div class="card-item card-total">
       <span class="total">€ {{ product().total }}</span>
     </div>
     <div>
-      <mat-icon>delete</mat-icon>
+      <button (click)="removeProduct()">
+        <mat-icon class="material-symbols-outlined deltete-icon">close</mat-icon>
+      </button>
     </div>
   </div>
 </article>
