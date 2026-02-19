@@ -98,6 +98,7 @@ export class CartService {
         totalQuantity: currentCart.totalQuantity - 1,
         total: Number((currentCart.total - product.price).toFixed(2)),
       });
+      this.storageService.setItem('dummyCart', this.cart());
     }
   }
 
