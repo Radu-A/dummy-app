@@ -10,6 +10,8 @@ import { MatInputModule } from '@angular/material/input';
 
 import { AuthService } from '../../services/auth-service';
 
+import { TestMessage } from '../../components/test-message/test-message';
+
 @Component({
   selector: 'app-login',
   imports: [
@@ -19,6 +21,7 @@ import { AuthService } from '../../services/auth-service';
     MatFormFieldModule,
     MatIconModule,
     MatInputModule,
+    TestMessage,
   ],
   templateUrl: './login.html',
   styleUrl: './login.scss',
