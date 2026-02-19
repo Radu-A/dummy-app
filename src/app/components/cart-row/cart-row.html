@@ -1,28 +1,55 @@
-<article class="cart-card">
-  <div class="card-image">
-    <img [src]="product().thumbnail" alt="" />
-  </div>
-  <div class="card-details">
-    <div class="card-title">
-      <h2>{{ product().title }}</h2>
+@if (screenSize() == 'XSmall') {
+  <article class="cart-card-small">
+    <div class="card-image">
+      <img [src]="product().thumbnail" alt="" />
     </div>
-    <div class="card-item card-price">
-      <span>€ {{ product().price }}</span>
-    </div>
-    <div class="card-item card-quantity">
-      <div class="buttons-container">
-        <button class="minus" (click)="subtractProduct()">-</button>
-        <button class="quantity-span">{{ product().quantity }}</button>
-        <button class="plus" (click)="addProduct()">+</button>
+    <div class="card-details">
+      <div class="card-title">
+        <h3>{{ product().title }}</h3>
+      </div>
+      <div class="card-quantity">
+        <div class="buttons-container">
+          <button class="minus" (click)="subtractProduct()">-</button>
+          <button class="quantity-span">{{ product().quantity }}</button>
+          <button class="plus" (click)="addProduct()">+</button>
+        </div>
+        <button class="remove-button" (click)="removeProduct()">
+          <span>Remove</span>
+          <!-- <mat-icon class="material-symbols-outlined deltete-icon">close</mat-icon> -->
+        </button>
       </div>
     </div>
-    <div class="card-item card-total">
-      <span class="total">€ {{ product().total }}</span>
+    <div class="card-price">
+      <span>€ {{ product().price }}</span>
     </div>
-    <div>
-      <button (click)="removeProduct()">
-        <mat-icon class="material-symbols-outlined deltete-icon">close</mat-icon>
-      </button>
+  </article>
+} @else {
+  <article class="cart-card-medium">
+    <div class="card-image">
+      <img [src]="product().thumbnail" alt="" />
     </div>
-  </div>
-</article>
+    <div class="card-details">
+      <div class="card-title">
+        <h2>{{ product().title }}</h2>
+      </div>
+      <div class="card-item card-price">
+        <span>€ {{ product().price }}</span>
+      </div>
+      <div class="card-item card-quantity">
+        <div class="buttons-container">
+          <button class="minus" (click)="subtractProduct()">-</button>
+          <button class="quantity-span">{{ product().quantity }}</button>
+          <button class="plus" (click)="addProduct()">+</button>
+        </div>
+      </div>
+      <div class="card-item card-total">
+        <span class="total">€ {{ product().total }}</span>
+      </div>
+      <div>
+        <button (click)="removeProduct()">
+          <mat-icon class="material-symbols-outlined deltete-icon">close</mat-icon>
+        </button>
+      </div>
+    </div>
+  </article>
+}

@@ -1,12 +1,12 @@
-import { Component, inject, input, InputSignal } from '@angular/core';
+import { Component, inject, input, InputSignal, signal } from '@angular/core';
 
 import { MatIcon } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 
 import { CartProductModel } from '../../models/cart.model';
-import { ProductModel } from '../../models/product.model';
 
 import { CartService } from '../../services/cart-service';
+import { BreakpointService } from '../../services/breakpoint-service';
 
 @Component({
   selector: 'app-cart-row',
@@ -16,6 +16,9 @@ import { CartService } from '../../services/cart-service';
 })
 export class CartRow {
   cartService = inject(CartService);
+  breakPointService = inject(BreakpointService);
+  screenSize = this.breakPointService.screenSize;
+
   product: InputSignal<CartProductModel> = input.required();
 
   addProduct() {
