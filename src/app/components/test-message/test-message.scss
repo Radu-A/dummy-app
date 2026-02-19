@@ -1,0 +1,13 @@
+.info-container {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+  gap: 1rem;
+  padding: 1rem;
+  min-width: 400px;
+  max-width: 500px;
+  background-color: var(--mat-sys-secondary-container);
+  span {
+    font-weight: 600;
+  }
+}
