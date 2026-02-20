@@ -2,9 +2,9 @@
 // TICKETS
 // =============
 
-- Responsive order-summary
-- Fix title overflow in cart-row 
+X Responsive order-summary
 - Number of articles in icon
+- Fix total products
 
 X impieza de console logs
 X manejo de erorres en storage-service

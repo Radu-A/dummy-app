@@ -33,6 +33,23 @@ header {
   .nav-icon {
     color: var(--mat-sys-on-surface);
   }
+  .cart-link {
+    position: relative;
+    .total-products {
+      top: -8px;
+      right: -8px;
+      position: absolute;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 1.2rem;
+      width: 1.2rem;
+      border-radius: 100%;
+      background-color: var(--mat-sys-primary);
+      color: white;
+      font-size: 0.8rem;
+    }
+  }
   .user-button {
     display: flex;
     align-items: center;
@@ -45,9 +62,6 @@ header {
     }
     .avatar-image {
       width: 3rem;
-    }
-    .nav-icon {
-      color: blue;
     }
   }
 

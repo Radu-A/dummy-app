@@ -7,8 +7,16 @@
     </nav>
     <span class="example-spacer"></span>
     <nav class="nav-icons">
-      <a [routerLink]="['/products/cart']" routerLinkActive="router-link-active" ]>
+      <a
+        class="cart-link"
+        [routerLink]="['/products/cart']"
+        routerLinkActive="router-link-active"
+        ]
+      >
         <mat-icon class="material-symbols-outlined nav-icon">shopping_cart</mat-icon>
+        @if (cart(); as cart) {
+          <div class="total-products">{{ cart.totalProducts }}</div>
+        }
       </a>
       <!-- CASE 1 - There is no session data -->
       @if (userData$ | async; as userData) {
