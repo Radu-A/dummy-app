@@ -68,7 +68,6 @@ export class CartService {
         this.cart.set({
           ...currentCart,
           products: currentProducts,
-          totalProducts: currentCart.totalProducts + 1,
           totalQuantity: currentCart.totalQuantity + 1,
           total: Number((currentCart.total + product.price).toFixed(2)),
         });
@@ -84,9 +83,11 @@ export class CartService {
     // Check if product is in products array
     const isProduct = currentCart.products.find((cartProduct) => cartProduct.id === product.id);
     if (!isProduct) return;
-    if (currentCart.totalQuantity <= 1 || currentCart.products.length === 0) {
+    // CASE 1 - There is no products in cart or there is only this product
+    if (currentCart.totalProducts <= 1 || currentCart.products.length === 0) {
       this.cart.set(null);
       this.storageService.removeItem('dummyCart');
+      // CASE 2 - There is this product and anothers
     } else {
       const productsArray = currentCart.products.filter((cartProduct) => {
         return cartProduct.id !== product.id;
@@ -95,7 +96,7 @@ export class CartService {
         ...currentCart,
         products: productsArray,
         totalProducts: currentCart.totalProducts - 1,
-        totalQuantity: currentCart.totalQuantity - 1,
+        totalQuantity: currentCart.totalQuantity - product.quantity,
         total: Number((currentCart.total - product.price).toFixed(2)),
       });
       this.storageService.setItem('dummyCart', this.cart());
