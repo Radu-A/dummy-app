@@ -6,9 +6,14 @@
         <app-cart-row [product]="product"></app-cart-row>
       }
     </section>
-    <section class="summary-section">
-      <app-order-summary [cart]="cart()!"></app-order-summary>
+    @if (screenSize() === 'XSmall') {
       <app-order-info></app-order-info>
-    </section>
+      <app-order-summary [cart]="cart()!"></app-order-summary>
+    } @else {
+      <section class="summary-section">
+        <app-order-summary [cart]="cart()!"></app-order-summary>
+        <app-order-info></app-order-info>
+      </section>
+    }
   </div>
 }

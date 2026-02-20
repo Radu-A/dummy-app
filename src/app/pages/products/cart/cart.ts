@@ -10,6 +10,7 @@ import { CartService } from '../../../services/cart-service';
 import { CartRow } from '../../../components/cart-row/cart-row';
 import { OrderSummary } from '../../../components/order-summary/order-summary';
 import { OrderInfo } from '../../../components/order-info/order-info';
+import { BreakpointService } from '../../../services/breakpoint-service';
 
 @Component({
   selector: 'app-cart',
@@ -19,5 +20,7 @@ import { OrderInfo } from '../../../components/order-info/order-info';
 })
 export class Cart {
   cartService = inject(CartService);
+  breakpointService = inject(BreakpointService);
   cart: WritableSignal<CartModel | null> = this.cartService.cart;
+  screenSize = this.breakpointService.screenSize;
 }

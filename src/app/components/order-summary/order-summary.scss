@@ -1,3 +1,14 @@
+.summary-container-small {
+  position: sticky;
+  bottom: 0px;
+  left: 0px;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding: 1rem;
+  background-color: var(--mat-sys-secondary-container);
+}
+
 .sumary-container-normal {
   display: flex;
   flex-direction: column;

@@ -2,6 +2,10 @@
 // TICKETS
 // =============
 
+- Responsive order-summary
+- Fix title overflow in cart-row 
+- Number of articles in icon
+
 X impieza de console logs
 X manejo de erorres en storage-service
 - Mapper
