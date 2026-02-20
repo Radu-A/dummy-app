@@ -132,7 +132,6 @@ export class CartService {
         this.cart.set({
           ...currentCart,
           products: productsArray,
-          totalProducts: currentCart.totalProducts - 1,
           totalQuantity: currentCart.totalQuantity - 1,
           total: Number((currentCart.total - product.price).toFixed(2)),
         });

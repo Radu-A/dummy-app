@@ -3,8 +3,10 @@
 // =============
 
 X Responsive order-summary
-- Number of articles in icon
-- Fix total products
+X Number of articles in icon
+X Manage empty cart
+X Fix total products
+- Ask before remove product
 
 X impieza de console logs
 X manejo de erorres en storage-service
