@@ -1,0 +1,24 @@
+.not-found-section {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.auth-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 1rem;
+  min-width: 400px;
+  max-width: 500px;
+  mat-card-title {
+    font: var(--mat-sys-headline-medium);
+  }
+  .separator {
+    padding: 0rem 3rem;
+    height: 1px;
+    background-color: var(--mat-sys-outline-variant);
+  }
+}

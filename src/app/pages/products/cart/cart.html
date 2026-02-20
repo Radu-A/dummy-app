@@ -1,19 +1,21 @@
 <div class="cart-header"></div>
-@if (cart()?.products && this.cart()) {
-  <div class="cart-container">
+<div class="cart-container">
+  @if (cart(); as cartData) {
     <section class="cart-grid">
-      @for (product of this.cart()!.products; track $index) {
+      @for (product of cartData.products; track $index) {
         <app-cart-row [product]="product"></app-cart-row>
       }
     </section>
     @if (screenSize() === 'XSmall') {
       <app-order-info></app-order-info>
-      <app-order-summary [cart]="cart()!"></app-order-summary>
+      <app-order-summary [cart]="cartData"></app-order-summary>
     } @else {
       <section class="summary-section">
-        <app-order-summary [cart]="cart()!"></app-order-summary>
+        <app-order-summary [cart]="cartData"></app-order-summary>
         <app-order-info></app-order-info>
       </section>
     }
-  </div>
-}
+  } @else {
+    <app-empty-cart></app-empty-cart>
+  }
+</div>

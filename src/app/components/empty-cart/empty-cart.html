@@ -1,0 +1,20 @@
+<section class="not-found-section">
+  <mat-card class="auth-card" appearance="outlined">
+    <img
+      mat-card-image
+      src="https://images.unsplash.com/photo-1557821552-17105176677c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w4MTc1NTR8MHwxfGFsbHx8fHx8fHx8fDE3NzE1ODk0NTd8&ixlib=rb-4.1.0&q=80&w=400"
+      alt="Photo of an empty cart"
+    />
+
+    <mat-card-header class="auth-card-header">
+      <mat-card-title>You don't have any items in your cart</mat-card-title>
+      <mat-card-subtitle>We invite you to visit our catalog again</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content class="auth-card-content"> </mat-card-content>
+
+    <span class="separator"></span>
+    <mat-card-content>
+      <a [routerLink]="['/']" matButton>Buy Again</a>
+    </mat-card-content>
+  </mat-card>
+</section>
