@@ -5,6 +5,7 @@ import { authGuard } from './others/guards/auth-guard';
 import { NotFoundPage } from './pages/not-found-page/not-found-page';
 import { Login } from './pages/login/login';
 import { Register } from './pages/register/register';
+import { Checkout } from './pages/products/checkout/checkout';
 
 export const routes: Routes = [
   {
