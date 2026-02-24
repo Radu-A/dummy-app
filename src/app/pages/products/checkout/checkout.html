@@ -1,1 +1,15 @@
-<p>checkout works!</p>
+<div class="cart-header"></div>
+<div class="cart-container">
+  @if (cart(); as cartData) {
+    <section class="address-form"></section>
+    @if (screenSize() === 'XSmall') {
+      <app-cart-summary [cart]="cartData"></app-cart-summary>
+      <app-order-summary [cart]="cartData"></app-order-summary>
+    } @else {
+      <section class="summary-section">
+        <app-cart-summary [cart]="cartData"></app-cart-summary>
+        <app-order-summary [cart]="cartData"></app-order-summary>
+      </section>
+    }
+  }
+</div>

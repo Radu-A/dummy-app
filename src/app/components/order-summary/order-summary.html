@@ -28,6 +28,10 @@
       <span>Product Discount</span>
       <span>-</span>
     </div>
-    <div class="pay"><button matButton="filled">Pay</button></div>
+    @if (router.url === '/products/cart') {
+      <div class="action-button">
+        <button matButton="filled" [routerLink]="['/products/checkout']">Purchase</button>
+      </div>
+    }
   </div>
 }

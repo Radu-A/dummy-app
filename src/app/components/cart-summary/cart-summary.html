@@ -1,0 +1,26 @@
+<div class="cart-summary-container">
+  <div class="header">
+    <h3>CART SUMMARY</h3>
+  </div>
+  <div class="separator"></div>
+  @if (cart(); as cartData) {
+    @for (cartProduct of cartData.products; track cartProduct.id) {
+      <article class="cart-card-small">
+        <div class="card-image">
+          <img [src]="cartProduct.thumbnail" alt="" />
+        </div>
+        <div class="card-details">
+          <div class="card-title">
+            <h3>{{ cartProduct.title }}</h3>
+          </div>
+          <div class="card-quantity">
+            <button class="quantity-span">{{ cartProduct.quantity }}</button>
+          </div>
+        </div>
+        <div class="card-price">
+          <span>€ {{ cartProduct.price }}</span>
+        </div>
+      </article>
+    }
+  }
+</div>
